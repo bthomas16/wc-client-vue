@@ -73,7 +73,6 @@ const mutations =
     {
         state.User = user;        
         state.isAuthorized = true;
-        state.isLoading = false;
         state.isUserLoaded = true;
     },
 
@@ -230,7 +229,10 @@ const actions =
         axios({
             method: 'GET',
             url: '/api/user/profile',
-            headers
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('watchJwt')
+            }
         }).then(res => {
             context.commit(AUTH_SUCCESS, res.data.user);
             context.commit(NOT_LOADING);            
@@ -248,26 +250,31 @@ const actions =
         context.commit(NOT_LOADING);        
     },
 
-    validateJwt(context) 
-    {
+    validateJwt(context) {
         context.commit(LOADING);        
-        return new Promise((resolve, reject) => {
-            console.log('validating jwt', localStorage.getItem('watchJwt'))
-            axios({
+         return axios({
                 method: 'GET',
                 url: '/api/user/validate-jwt/',
                 params: {
                     jwt: localStorage.getItem('watchJwt')
                 }
             }).then(res => {
-                context.commit(VALIDATE_JWT);
-                context.commit(NOT_LOADING);                
-                resolve(res.data)
-            }).catch(err => {
-                reject()
-                context.commit(NOT_LOADING);
-                console.log(err)
-            })
+                console.log('store responseon', res)
+                if (res.data.isSuccess) {
+                    context.commit(VALIDATE_JWT);
+                    context.commit(NOT_LOADING);                
+                    return res;
+                }
+                else {
+                    context.commit(INVALIDATE_JWT);
+                    context.commit(NOT_LOADING); 
+                    return res;
+                }
+            }
+        ).catch(err => {
+            console.log('store responseon', err)            
+            context.commit(NOT_LOADING);
+            return err
         })
     },
 
@@ -508,7 +515,7 @@ const actions =
             return axios({
                 method: 'POST',
                 url: '/api/watch/upload',
-                headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { 'Content-Type': 'multipart/form-data', 'authorization': localStorage.getItem('watchJwt') },
                 data: imagesFormData
             })
             .then((res) => {
@@ -527,11 +534,7 @@ const getters =
         return state.isLoading;
     },
 
-    getUserAuthStatus(state) {    
-        return state.isAuthorized;
-    },
-
-    getUserLoadStatus(state) {    
+    getUserLoadStatus(state) {   
         return state.isUserLoaded;
     },
 

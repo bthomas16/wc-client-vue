@@ -8,43 +8,60 @@ export const routes = [
         path: '', 
         name: 'home',
         component: Home,
-        beforeEnter: dissallowAuth    
+        beforeEnter: disallowAuth    
     },
     { 
         path: '/profile',
         name: 'profile',
         component: Profile,
         beforeEnter: requireAuth    
+    },
+    { 
+        path: '/*',
+        name: 'wildcard',
+        component: Home,
+        beforeEnter: returnHome    
     }
 ];
 
-function dissallowAuth(to, from, next) {
-    let jwt = localStorage.getItem('watchJwt');
-    console.log('dissallow', jwt)
-    if(!jwt) next();
-    else 
-    {
-        store.dispatch('validateJwt').then(res => {
-            if(res.isSuccess) next('/profile');
-            else next();
-        }).catch((err) => {
-            console.log('caught err:', err)
-            next();
-        })
+    function returnHome(to, from, next) {
+        next('/')
     }
-}
 
-function requireAuth(to, from, next) { 
-    let jwt = localStorage.getItem('watchJwt');
-    console.log('allow', jwt);
+    function getJwt() {
+        return localStorage.getItem('watchJwt');
+    }
 
-    if(jwt){
-        store.dispatch('validateJwt').then(res => {
-            if(res.isSuccess) next();
-            else next('/');
-        }).catch(() => {
+    function requireAuth(to, from, next) {
+        if (!getJwt()) {
             next('/')
-        })   
+            return;
+        }
+        store.dispatch('validateJwt').then(res => {
+        console.log('fis')
+            console.log('data required', res.data)
+            if (res.data.isSuccess) {
+                next()
+                return
+            }
+                next('/');
+                return
+        });
     }
-    else next('/');
+
+    function disallowAuth(to, from, next) {
+        if (!getJwt()) {
+            next()
+            return;
+        } 
+        store.dispatch('validateJwt').then(res => {
+            console.log('data disallow', res.data)
+            if (res.data.isSuccess) {
+                next('/profile')
+                return
+            }
+        console.log('fic')
+                next()
+                return
+        });
 }

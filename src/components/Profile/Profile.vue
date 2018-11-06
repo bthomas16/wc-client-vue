@@ -37,6 +37,10 @@ export default {
     computed: {
         isUserLoaded() {
             return this.$store.state.isUserLoaded
+        },
+
+        isCollectionLoaded() {
+            return this.$store.getters.getCollectionLoadStatus;
         }
     },
 

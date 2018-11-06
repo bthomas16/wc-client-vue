@@ -1,5 +1,10 @@
 <template>
-    <b-container fluid>
+    <b-container v-if="!isCollectionLoaded" class="z-4">
+        <b-row align-h="center" align-v="center">
+            <b-col class="mx-auto mt-5 center">LOADING...</b-col>
+        </b-row>
+    </b-container>
+    <b-container fluid v-else>
         <b-row v-if="Collection.length" align-h="center" no-gutters>
             <b-col>
                 <b-row class="my-3 mx-auto pl-2 pl-md-0 center m-left-align" align-v="center" align-h="center">
@@ -303,6 +308,10 @@ export default {
 
         isManagingCollection() {
             return this.$store.state.isManagingCollection;
+        },
+
+        isCollectionLoaded() {
+            return this.$store.getters.getCollectionLoadStatus;
         }
     },
 

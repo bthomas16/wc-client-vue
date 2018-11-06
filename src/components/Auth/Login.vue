@@ -71,12 +71,13 @@
         {
             console.log('submitting', this.form)
             this.$store.dispatch('login', this.form).then(res => {
+                if(res.isSuccess)
                     this.$router.push({ path: '/profile'}); 
-                }).catch(err => {
-                    console.log(err)
+                else {
                     this.showAlert = true;
                     this.responseStyle = 'danger';
-                    this.responseMessage = err.message
+                    this.responseMessage = res.message
+                }
                 })
         },
 

@@ -17,11 +17,11 @@
 
                         <b-col cols="12" class="watch-wrapper order-1 border box-shadow"> 
                             <b-row aling-h="center" align-v="center" no-gutters>
-                                <b-col cols="12" xl="6" class="mx-auto">
+                                <b-col cols="12" xl="6" class="mx-auto p-xl-1">
                                     <b-img
                                     @click="selectWatch(watch)"
                                     :src="watch.src" 
-                                    fluid class="pointer">
+                                    fluid class="pointer p-xl-1 border-xl mx-auto">
                                     </b-img>
                                 </b-col>
                                 <b-col cols="12" xl="6" class="d-none d-md-block mx-auto mt-md-2 mt-xl-0">
@@ -270,7 +270,16 @@ export default {
         padding: .5rem;
     }
 
+    .border-xl {
+        border: 1px solid lightgray;
+    }
 
+
+    @media(max-width: 1000px) {
+        .border-xl{
+            border: none;
+        }
+    }
 
     @media(min-width: 768px) and (max-width: 1000px) {
         #searchRef, #seeMore {
