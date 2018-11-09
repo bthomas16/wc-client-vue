@@ -1,6 +1,11 @@
 <template>
     <b-container ref="profileRef" v-if="isUserLoaded" class="p-0">
-       <b-row no-gutters>
+        {{isServerValidationError}}
+        <b-row no-gutters class="box-shadow bg-red z-4" v-if="isServerValidationError"> 
+            IT"S ALL FUCKED
+            <button @click="fuckIt">Reload Session</button>
+        </b-row>
+       <b-row no-gutters v-else>
             <b-col lg="2" md="3" cols="12" class="border bg-lightgray mx-auto">
                <app-profile-info></app-profile-info>
                <b-row class="d-none d-md-block" no-gutters style="min-height: 62vh;">
@@ -34,6 +39,12 @@ export default {
         appFeed: Feed
     },
 
+    methods: {
+        fuckIt() {
+            location.reload();
+        }
+    },
+
     computed: {
         isUserLoaded() {
             return this.$store.state.isUserLoaded
@@ -41,6 +52,10 @@ export default {
 
         isCollectionLoaded() {
             return this.$store.getters.getCollectionLoadStatus;
+        },
+
+        isServerValidationError() {
+            return this.$store.state.isServerValidationError;
         }
     },
 

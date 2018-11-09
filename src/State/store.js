@@ -37,6 +37,7 @@ const axios = require('axios'),
     TOGGLE_IS_MANAGING_COLLECTION = "TOGGLE_IS_MANAGING_COLLECTION",
     TOGGLE_IS_SHOW_FLAGS = "TOGGLE_IS_SHOW_FLAGS",
     TOGGLE_IS_SHOW_EDIT_FLAGS = "TOGGLE_IS_SHOW_EDIT_FLAGS",
+    SERVER_VALIDATION_ERROR = "SERVER_VALIDATION_ERROR",
     SUBMIT_EDIT_WATCH = "SUBMIT_EDIT_WATCH";
 
 const state = 
@@ -56,7 +57,9 @@ const state =
     isShowEditFlags: true,
     isUserLoaded: false,
     isCollectionLoaded: false,
-    selectedWatch: {}
+    selectedWatch: {},
+    isServerValidationError: false,
+    serverValidationError: null
 }
 
 const mutations = 
@@ -174,6 +177,20 @@ const mutations =
 
     [TOGGLE_IS_SHOW_EDIT_FLAGS](state) {
         state.isShowEditFlags = !state.isShowEditFlags;
+    },
+
+    [SERVER_VALIDATION_ERROR](state, err) {
+        
+        switch (err) {
+            case'jsonwebtoken': 
+                state.isServerValidationError = true;
+                state.serverValidationError = "Your session has expired. Please login and try again."
+                break;
+            default:
+                state.isServerValidationError = true;
+                state.serverValidationError = "Your session has expired. Please login and try again."
+        }
+        console.log('should be doing shit via server validation error', state.isServerValidationError)
     }
 }
 
@@ -239,6 +256,8 @@ const actions =
         }).catch(err => {
             console.log(err)
             context.commit(NOT_LOADING);
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
         })
     },
 
@@ -271,9 +290,8 @@ const actions =
                     return res;
                 }
             }
-        ).catch(err => {
-            console.log('store responseon', err)            
-            context.commit(NOT_LOADING);
+        ).catch(err => {          
+            context.commit(NOT_LOADING);    
             return err
         })
     },
@@ -293,17 +311,23 @@ const actions =
             context.commit(SET_COLLECTION_LENGTH, res.data.collection.length);
             context.commit(NOT_LOADING);            
         }).catch(err => {
-            context.commit(SET_COLLECTION, []);
-            context.commit(NOT_LOADING);            
+            context.commit(NOT_LOADING);     
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
+            return err;       
         })
     },
 
     submitNewWatch(context, watch) {
+        console.log('it likes this new shit', localStorage.getItem('watchJwt'))        
         context.commit(LOADING);        
             axios({
                 method: 'POST',
                 url: '/api/watch',
-                headers,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('watchJwt')
+                },
                 data: watch
             })
             .then((res) => {
@@ -311,7 +335,10 @@ const actions =
                 context.commit(NOT_LOADING);
                 return res.data.watch.id
             }).catch((err) => {
-                context.commit(NOT_LOADING);      
+                context.commit(NOT_LOADING);   
+                context.commit(INVALIDATE_JWT);
+                context.commit(SERVER_VALIDATION_ERROR);
+                return err;   
         })
     },
 
@@ -323,16 +350,21 @@ const actions =
                 params: {
                     id: watch.id
                 },
-                headers,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('watchJwt')
+                },
                 data: watch
             })
             .then((res) => {
                 context.commit(SUBMIT_EDIT_WATCH, res.data.watch);
                 context.commit(NOT_LOADING);
-                return;
+                return res;
             }).catch((err) => {
-                console.log(err);
-                context.commit(NOT_LOADING);      
+                context.commit(NOT_LOADING); 
+                context.commit(INVALIDATE_JWT);
+                context.commit(SERVER_VALIDATION_ERROR);
+                return err;     
         })
     },
 
@@ -340,17 +372,22 @@ const actions =
         axios({
             method: 'PUT',
             url: '/api/watch/remove/',
-            headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('watchJwt')
+            },
             params: {
                 id: id
-            },
+            }
         })
         .then((res) => {
-            console.log('updated that watch!', res.data.watch)
             context.commit(NOT_LOADING);
-            return;
+            return res;
         }).catch((err) => { 
-            context.commit(NOT_LOADING);      
+            context.commit(NOT_LOADING); 
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR); 
+            return err;    
         })
     },
 
@@ -359,24 +396,25 @@ const actions =
             axios({
                 method: 'POST',
                 url: '/api/watch/remove',
-                headers,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('watchJwt')
+                },
                 data: watchDetails
             })
             .then((res) => {
-                console.log('created new watch removed!', res.data.watch)
                 context.commit(NOT_LOADING);
             }).catch((err) => {
-                console.log(err)
-                context.commit(NOT_LOADING);        
+                context.commit(NOT_LOADING);
+                context.commit(INVALIDATE_JWT);
+                context.commit(SERVER_VALIDATION_ERROR);      
+                return err;
         })
     },
 
     selectWatch(context, watch) {
-        if(watch != null) {
-            context.commit('SELECT_WATCH', watch);
-            return true;
-        }
-        throw new Error('HOLY SHIT WHAT DID YOU DO?!');
+        context.commit('SELECT_WATCH', watch);
+        return true;
     },
 
     updateCollectionOrder(context, newCollectionOrder) {
@@ -384,13 +422,18 @@ const actions =
         axios({
             method: 'PUT',
             url: '/api/watch/update-order',
-            headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('watchJwt')
+            },
             data: newCollectionOrder
         }).then(res => {
             console.log(res.data.collection)
             context.commit(SET_COLLECTION, res.data.collection)
         }).catch(err => {
-            console.log(err)
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
+            return err;
         })
     },
 
@@ -404,10 +447,11 @@ const actions =
                 'authorization': localStorage.getItem('watchJwt')
             }
         }).then(res => {
-            console.log('favorites be', res.data.favorites)
             context.commit('FAVORITES_COLLECTION', res.data.favorites);
         }).catch(err => {
-            console.log(err);
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
+            return err;
         })
     },
 
@@ -421,10 +465,11 @@ const actions =
                 'authorization': localStorage.getItem('watchJwt')
             }
         }).then(res => {
-            console.log('okafhb', res.data.numberFSOT)
             context.commit('SET_NUMBER_FSOT', +res.data.numberFSOT);
         }).catch(err => {
-            console.log(err);
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
+            return err;
         })
     },
 
@@ -440,12 +485,17 @@ const actions =
             params: {
                 watchId
             },
-            headers
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': localStorage.getItem('watchJwt')
+            }
         }).then(res => {
             console.log('toggled', res.data)
             context.commit('TOGGLE_FAVORITE', res.data.favorites);
         }).catch(err => {
-            console.log('fuckit', err);
+            context.commit(INVALIDATE_JWT);
+            context.commit(SERVER_VALIDATION_ERROR);
+            return err;
         })
     }, 
 
@@ -471,7 +521,10 @@ const actions =
                 method: 'GET',
                 url: `/api/watch/sort-filter/${filterObj.category}/`,
                 params: { option: filterObj.option },
-                headers
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('watchJwt')
+                }
             })
             .then((res) => {
                 let collection = res.data.collection;
@@ -479,8 +532,10 @@ const actions =
                 context.commit(NOT_LOADING);
             }).catch((err) => {
                 console.log(err)
-                context.commit(SET_COLLECTION, []);                
                 context.commit(NOT_LOADING);      
+                context.commit(INVALIDATE_JWT);
+                context.commit(SERVER_VALIDATION_ERROR);  
+                return err;             
         })
     },
 
@@ -490,16 +545,20 @@ const actions =
                 method: 'GET',
                 url: '/api/watch/sort-filter/search/',
                 params: { searchTerm: searchTermToFilterBy },
-                headers
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': localStorage.getItem('watchJwt')
+                }
             })
             .then((res) => {
                 let collection = res.data.collection;
                 context.commit(SET_COLLECTION, collection);
                 context.commit(NOT_LOADING);
             }).catch((err) => {
-                console.log(err)
-                context.commit(SET_COLLECTION, []);                
-                context.commit(NOT_LOADING);       
+                context.commit(NOT_LOADING);
+                context.commit(INVALIDATE_JWT);
+                context.commit(SERVER_VALIDATION_ERROR);      
+                return err;
         })
     },
     
@@ -515,16 +574,25 @@ const actions =
             return axios({
                 method: 'POST',
                 url: '/api/watch/upload',
-                headers: { 'Content-Type': 'multipart/form-data', 'authorization': localStorage.getItem('watchJwt') },
+                headers: { 
+                    'Content-Type': 'multipart/form-data',
+                     'authorization': localStorage.getItem('watchJwt')
+                },
                 data: imagesFormData
             })
             .then((res) => {
                 context.commit(NOT_LOADING);
                 return res.data.uploadedImagesData;
             }).catch((err) => {
-                console.log(err)               
-                context.commit(NOT_LOADING);       
+                context.commit(INVALIDATE_JWT);               
+                context.commit(NOT_LOADING);  
+                context.commit(SERVER_VALIDATION_ERROR);   
+                return err;  
         })
+    },
+
+    serverValidationError(context, err) {
+        context.commit(SERVER_VALIDATION_ERROR, err);
     }
 }
 

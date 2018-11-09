@@ -204,22 +204,23 @@ export default {
             this.isEditingExistingWatch = false;
             this.$refs.seeMoreModal.hide();
             if(!this.addWatch.id) {
-                // 1. Submit the watch form without images
-                // 2. Return the newly created watch's id
-                // 3. use this watch id to submit the array of 1 to 10 images
-                // 4. save this array of images to the src object of each watch
-                // 5. Example image in array:   
-                        // image: {src: 'sdf.png', location:'aws.sdf.png', size: '74kb', order: byIndex}
-                        console.log('submiting that fukcer', this.addWatch.src)
+                // watch doesnt exist yet, create new watch
                 this.$store.dispatch('submitNewWatch', this.addWatch).then((watchId) => {
                     this.createAddWatch(); //reset add watch to defaults
                     this.addWatchCount = 1; //resets watch count
-                });
+                }).catch(err => {
+                    console.log('COULDNT NEW UP THIS BITFH', err)
+                    // this.$store.dispatch('serverValidationError', err);
+                })
             } 
             else {
-                this.$store.dispatch('submitEditWatch', this.addWatch).then(() => {
+                this.$store.dispatch('submitEditWatch', this.addWatch).then((res) => {
+                    console.log('STILL FUCKING SHIT UP', res)
                     this.createAddWatch(); //reset add watch to defaults
                     this.addWatchCount = 1; //resets watch count
+                }).catch(err => {
+                    console.log('COULDNT EDIT THIS BITFH', err)
+                    // this.$store.dispatch('serverValidationError', err);
                 });
             }
             // TODO: NOT THIS
