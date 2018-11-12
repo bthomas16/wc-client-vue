@@ -1,11 +1,22 @@
 <template>
-    <b-container v-if="!isCollectionLoaded" class="z-4">
+    <b-container v-if="!isUserLoaded" class="z-4">
         <b-row align-h="center" align-v="center">
             <b-col class="mx-auto mt-5 center">LOADING...</b-col>
         </b-row>
     </b-container>
     <b-container fluid v-else>
-        <b-row v-if="Collection.length" align-h="center" no-gutters>
+         <b-row v-if="!Collection.length && !isFilteringCollection" align-h="center" no-gutters>
+            <b-col cols="10" md="8" class="border my-5 center p-2 p-md-5" id="begin-collection">
+                <p class="h2 center">Welcome to your <span class="nowrap">Watch Collection!</span></p>  
+                <p class="h5 m-h2 mt-4 mt-md-5">Get started by adding a watch!</p>
+                <b-row>
+                    <b-col cols="6" class="mx-auto my-3">
+                        <b-button variant="success" class="my-2" size="lg" @click="addWatchModal" block>Add Watch</b-button>
+                    </b-col>
+                </b-row>
+            </b-col>
+        </b-row>
+        <b-row v-else align-h="center" no-gutters>
             <b-col>
                 <b-row class="my-3 mx-auto pl-2 pl-md-0 center m-left-align" align-v="center" align-h="center">
                     <b-col cols="12" md="5" class="p-0 m-0 h3">
@@ -22,26 +33,20 @@
                 </manage-collection>
                 
                 <watch-collection 
+                    v-if="Collection.length"
                     @selectWatch="selectWatch" 
                     @editWatchModal="editWatchModal" 
                     @orderChanged="orderChanged"
                     :Collection="Collection">
                 </watch-collection>
+                <b-col v-else class="center w-100 mt-4">
+                    No watches found
+                </b-col>
             </b-col>
         </b-row>
 
         <!-- No watch collection / Start Collection -->
-        <b-row v-else align-h="center" :class="isManagingCollection ? 'none' : ''">
-            <b-col cols="11" md="8" class="border my-5 center p-2 p-md-5" id="begin-collection">
-                <p class="h2 center">Welcome to your <span class="nowrap">Watch Collection!</span></p>  
-                <p class="h5 m-h2 mt-4 mt-md-5">Get started by adding a watch!</p>
-                <b-row>
-                    <b-col cols="6" class="mx-auto my-3">
-                        <b-button variant="success" class="my-2" size="lg" @click="addWatchModal" block>Add Watch</b-button>
-                    </b-col>
-                </b-row>
-            </b-col>
-        </b-row>
+       
 
         <!-- SEE MORE MODAL -->
         <b-modal 
@@ -302,17 +307,16 @@ export default {
             return this.$store.state.Collection;
         },
 
-        CollectionLengthUnSorted()
-        {
-            return this.$store.state.CollectionLength;
-        },
-
         isManagingCollection() {
             return this.$store.state.isManagingCollection;
         },
 
-        isCollectionLoaded() {
-            return this.$store.getters.getCollectionLoadStatus;
+        isUserLoaded() {
+            return this.$store.state.isUserLoaded;
+        },
+
+        isFilteringCollection() {
+            return this.$store.state.isFilteringCollection;
         }
     },
 

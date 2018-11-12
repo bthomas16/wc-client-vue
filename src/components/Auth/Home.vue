@@ -1,58 +1,25 @@
 <template>
     <b-container fluid>
-        <b-row align-v="center" align-h="center" class="p-0 p-md-2 p-lg-0 mx-auto">
-            <b-col cols="12" md="5" order="2" order-md="1" class="mt-3 mx-auto">
-                <b-row no-gutters>
-                    <h2 class="border-bottom pt-0 px-1 pb-3 white mx-auto mt-3 my-1 mt-md-0 mx-md-0 Poppins"><strong>Featured Collection</strong></h2>
-                    <b-col cols="12" lg="11" class="mt-3">
-                        <b-form-row class="mx-auto">
-                            <b-col cols="4" v-for="watch in FeaturedWatches" :key="watch.id" class="pointer"  @click="selectWatch(watch)">
-                                <b-row align-v="start" align-h="center" class="mb-3 bg-white" no-gutters>
-                                    <b-col cols="12" class="border py-1 py-md-3 bg-white">
-                                        <b-img
-                                        @click="selectWatch(watch)"
-                                        :src="watch.src" 
-                                        fluid>
-                                        </b-img>
-                                    </b-col>
-                                    <b-col cols="12 center bg-white-opaque my-0 px-3 pt-1">
-                                        <b-img id="brandLogo" :src="watch.logoSrc" fluid class="mx-auto p-3"></b-img>
-                                    </b-col>
-                                    <b-col cols="12" class="mx-auto p-1 bg-white-opaque">
-                                        <p class="my-0 h5">{{watch.brand}}</p>
-                                        <p class="my-0 h6 m-h3">{{watch.name}}</p>
-                                        <p class="green mb-0 m-h3">${{watch.value}}</p>
-                                    </b-col>
-                            </b-row>
-                        </b-col>
-                    </b-form-row>
-                </b-col>
-            </b-row>
-        </b-col> 
-        <b-col cols="12" md="7" class="mt-3 mt-md-0 mx-auto">
-            <b-row no-gutters align-h="center">
-                <!-- <b-alert v-if="isValidToken" show class="w-75" variant="danger">Your session has expired. Please login again</b-alert>  -->
-                <b-col cols="12" lg="8" class="mx-auto">
-                    <span v-if="showLogin">
-                        <app-login @toggleAuthView="toggleAuthParent"></app-login>
-                    </span>
-                    <span v-else>
-                        <app-register @toggleAuthView="toggleAuthParent"></app-register>
-                    </span>  
-                </b-col>
-            </b-row>
-        </b-col>
-    </b-row>
-
-
-        <b-modal :title="selectedWatch.name" ref="seeFeaturedWatchModal">
-            <app-see-more :selectedWatch="selectedWatch"></app-see-more>
-            <div slot="modal-footer" class="w-100">
-                <b-btn size="" class="float-right" variant="primary" @click="closeFeaturedWatchModel">
-                    OK
-                </b-btn>
-            </div>
-        </b-modal>
+        <b-row align-v="center" align-h="center" no-gutters>
+            <b-col cols="11" lg="5" order="2" order-lg="1" class="p-0 p-md-0 mt-0 mx-auto">
+                <!-- <p class="white h2 m-h1 ml-1 nowrap my-0 mt-2"><strong>Featured Collection</strong></p>
+                <p class="border-bottom pt-0 px-1 pb-3 white ml-1 my-0 Poppins w-75 d-block d-md-none"></p>
+                <p class="border-bottom pt-0 px-1 pb-3 white ml-1 my-0 Poppins w-50 d-none d-md-block"></p> -->
+                <featured-collection></featured-collection>
+            </b-col> 
+            <b-col cols="12" lg="6" class="mx-auto">
+                <b-row no-gutters align-v="center" align-h="center" class="mx-auto">
+                    <b-col cols="12" md="12" class="p-2 p-md-0 mt-3 mt-md-0">
+                        <span v-if="showLogin">
+                            <app-login @toggleAuthView="toggleAuthParent"></app-login>
+                        </span>
+                        <span v-else>
+                            <app-register @toggleAuthView="toggleAuthParent"></app-register>
+                        </span>  
+                    </b-col>
+                </b-row>
+            </b-col>
+        </b-row>
         
     </b-container>
 </template>
@@ -60,14 +27,15 @@
 <script>
 import Register from './Register.vue';
 import Login from './Login.vue';
-import SeeMore from '../Profile/Collection/Modals/SeeMoreModal.vue';
+
+import FeaturedCollection from '../FeaturedCollection.vue';
 
 
 export default {
     components: {
       appRegister: Register,
       appLogin: Login,
-      appSeeMore: SeeMore 
+      featuredCollection: FeaturedCollection
     },
     data () {
         return {
@@ -130,15 +98,6 @@ export default {
             return this.showLogin = !this.showLogin;
         },
 
-        selectWatch(watch) {
-            this.selectedWatch = watch;
-            this.$refs.seeFeaturedWatchModal.show();
-        },
-
-        closeFeaturedWatchModel() {
-            this.$refs.seeFeaturedWatchModal.hide()
-        },
-
         isValidToken() {
             return this.$store.state.isAuthorized;
         }
@@ -153,10 +112,11 @@ export default {
 }
 
 .container-fluid {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://topwatch.vn/upload_images/images/topwatch-huong-dan-su-dung-va-bao-quan-dong-ho(1).jpg");
-  height: 92.95vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("http://localhost:8081/api/static-assets/tablebg.jpg");
+  min-height: 100vh;
+  height: auto;
   background-position: center;
-  background-repeat: no-repeat;
+  background-repeat:repeat-y;
   background-size: cover;
   position: relative;
 }
@@ -173,13 +133,6 @@ export default {
 
 #brandLogo {
     max-height: 75px;
-}
-
-@media(max-height: 768px) {
-    .container-fluid {
-        overflow-y: scroll !important;
-        /* height: auto; */
-    }
 }
 </style>
 

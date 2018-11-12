@@ -26,7 +26,6 @@ const axios = require('axios'),
     INVALIDATE_JWT = "INVALIDATE_JWT",
     NAME_COLLECTION = "NAME_COLLECTION",
     SET_COLLECTION = "SET_COLLECTION",
-    SET_COLLECTION_LENGTH = "SET_COLLECTION_LENGTH",
     SUBMIT_NEW_WATCH = "SUBMIT_NEW_WATCH",
     SELECT_WATCH = "SELECT_WATCH",
     WATCH_ORDER_UPDATED = "WATCH_ORDER_UPDATED",
@@ -38,6 +37,7 @@ const axios = require('axios'),
     TOGGLE_IS_SHOW_FLAGS = "TOGGLE_IS_SHOW_FLAGS",
     TOGGLE_IS_SHOW_EDIT_FLAGS = "TOGGLE_IS_SHOW_EDIT_FLAGS",
     SERVER_VALIDATION_ERROR = "SERVER_VALIDATION_ERROR",
+    FILTERING = "FILTERING",
     SUBMIT_EDIT_WATCH = "SUBMIT_EDIT_WATCH";
 
 const state = 
@@ -46,13 +46,13 @@ const state =
     isAuthorized: false,
     User: {},
     Collection: [],
-    CollectionLength: 0,
     CurrentCardSize: 'sm',
     MobileCardSizeToUse: 3,
     DesktopCardSizeToUse: 3,
     Favorites: [],
     NumberFSOT: 0, //array of watch id's
     isManagingCollection: false,
+    isFilteringCollection: false,
     isShowFlags: true,
     isShowEditFlags: true,
     isUserLoaded: false,
@@ -65,6 +65,7 @@ const state =
 const mutations = 
 {
     [LOADING](state) {
+        console.log('now true')
         state.isLoading = true;
     },
 
@@ -112,10 +113,6 @@ const mutations =
         state.isLoading = false;     
         state.isCollectionLoaded = true;               
         state.Collection = collection;
-    },
-
-    [SET_COLLECTION_LENGTH](state, collectionLength) {
-        state.collectionLength = collectionLength;
     },
 
     [SELECT_WATCH](state, watch) {
@@ -179,6 +176,10 @@ const mutations =
         state.isShowEditFlags = !state.isShowEditFlags;
     },
 
+    [FILTERING](state, value) {
+        state.isFilteringCollection = value;
+    },
+
     [SERVER_VALIDATION_ERROR](state, err) {
         
         switch (err) {
@@ -198,7 +199,7 @@ const actions =
 {
     login(context, formData) 
     {
-        context.commit(LOADING); // show spinner
+        context.commit(LOADING); 
         return new Promise((resolve, reject) => {
                 axios.post('/api/user/login', formData)
                 .then(res => {
@@ -217,7 +218,7 @@ const actions =
 
     register(context, formData) 
     {
-        context.commit(LOADING);// show spinner
+        context.commit(LOADING);
         return new Promise((resolve, reject) => {
             axios({
                 method: 'POST',
@@ -298,6 +299,7 @@ const actions =
 
     loadUserCollection(context) {
         context.commit(LOADING);
+        context.commit(FILTERING, false);
         axios({
             method: 'GET',
             url: '/api/watch',
@@ -308,12 +310,11 @@ const actions =
         })
         .then(res => {
             context.commit(SET_COLLECTION, res.data.collection);
-            context.commit(SET_COLLECTION_LENGTH, res.data.collection.length);
             context.commit(NOT_LOADING);            
         }).catch(err => {
             context.commit(NOT_LOADING);     
             context.commit(INVALIDATE_JWT);
-            context.commit(SERVER_VALIDATION_ERROR);
+            // context.commit(SERVER_VALIDATION_ERROR);
             return err;       
         })
     },
@@ -516,6 +517,7 @@ const actions =
 
     getFilteredCollection(context, filterObj) {
         context.commit(LOADING);
+        context.commit(FILTERING, true);
         console.log(filterObj)
             axios({
                 method: 'GET',
@@ -541,6 +543,7 @@ const actions =
 
     getFilteredCollectionBySearchTerm(context, searchTermToFilterBy) {
         context.commit(LOADING);
+        context.commit(FILTERING, true);
             axios({
                 method: 'GET',
                 url: '/api/watch/sort-filter/search/',
@@ -564,7 +567,7 @@ const actions =
     
 
     uploadImagesToAwsS3(context, images) {
-        context.commit(LOADING);        
+        // context.commit(LOADING);        
         let imagesFormData = new FormData();
         // for( var i = 0; i < images.length; i++ ){
         //     let image = images[i];
@@ -581,11 +584,9 @@ const actions =
                 data: imagesFormData
             })
             .then((res) => {
-                context.commit(NOT_LOADING);
                 return res.data.uploadedImagesData;
             }).catch((err) => {
                 context.commit(INVALIDATE_JWT);               
-                context.commit(NOT_LOADING);  
                 context.commit(SERVER_VALIDATION_ERROR);   
                 return err;  
         })
@@ -606,7 +607,7 @@ const getters =
         return state.isUserLoaded;
     },
 
-    getCollectionLoadStatus(staste) {
+    getCollectionLoadStatus(state) {
         return state.isCollectionLoaded;
     },
 

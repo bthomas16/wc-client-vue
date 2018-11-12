@@ -325,6 +325,10 @@
         width: 100vw !important;
     }
 
+    .mw-75 {
+        width: 75vw !important;
+    }
+
     .modal-header, .modal-footer {
         padding: .35em !important;
         padding-right: .75em !important;

@@ -1,5 +1,5 @@
 <template>
-  <b-container fluid>
+  <b-container fluid id="app">
     <app-header></app-header>
     <transition name="slide" >
       <router-view :key="$route.fullPath"></router-view>
@@ -20,4 +20,7 @@ import Header from './components/Header.vue'
 </script>
 
 <style>
+#app {
+  height: 100vh;
+}
 </style>

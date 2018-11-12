@@ -1,15 +1,14 @@
 <template>
-    <b-container class="m-0 p-0">
-        <b-row>            
+    <b-container>
+        <b-row no-gutters>            
             <b-col cols="12" class="mx-auto" align-h="center">
                 <b-alert v-if="showAlert" v-bind:variant="responseStyle">{{responseMessage}}</b-alert>
                 <b-form @submit.prevent="onSubmit">
                     <b-card
-                    img-src="https://blog.propertyroom.com/wp-content/uploads/2015/07/Watch-Collect.jpg"
-                            img-alt="Card image"
-                            
-                            class="m-0 relative"
-                            >
+                        img-src="http://localhost:8081/api/static-assets/watcheshomecardbg.jpg"
+                        img-alt="Card image"
+                        class="m-0 relative"
+                        >
                         <div class="card-text mx-auto"> 
                             <h4>Login to manage your collection!</h4>
                             <b-alert show v-bind:variant="responseStyle" v-if="showAlert">{{responseMessage}}</b-alert> 
@@ -40,7 +39,7 @@
                                     <b-button type="submit" variant="success">Submit</b-button>
                                 </b-col>
                                 <b-col cols="8" class="right-align">
-                                    <p class="h8 m-1 ">Not a user? <span class="link nowrap" @click="toggleAuthChild">Register Here</span></p>
+                                    <p class="h8 m-1">Not a user? <span class="link nowrap" @click="toggleAuthChild">Register Here</span></p>
                                 </b-col>
                             </b-row>
                         </div>

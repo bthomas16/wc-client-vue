@@ -1,6 +1,7 @@
 import Home from './components/Auth/Home.vue';
 import Profile from './components/Profile/Profile.vue';
 import Collection from './components/Profile/Profile.vue';
+import DiscoverWatches from './components/DiscoverWatches.vue';
 import store from './State/store.js';
 
 export const routes = [
@@ -15,6 +16,11 @@ export const routes = [
         name: 'profile',
         component: Profile,
         beforeEnter: requireAuth    
+    },
+    { 
+        path: '/discover',
+        name: 'discover',
+        component: DiscoverWatches   
     },
     { 
         path: '/*',

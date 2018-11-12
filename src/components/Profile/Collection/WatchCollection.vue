@@ -3,7 +3,7 @@
 
             <draggable v-model="Collection" @start="startDrag" @end="endDrag" class="py-2">
 
-                <b-col :cols="smSizeCard" :md="mdSizeCard" class="left p-half"   v-for="watch in Collection" :key="watch.name" >
+                <b-col :cols="smSizeCard" :md="mdSizeCard" class="left p-half"   v-for="watch in Collection" :key="watch.id" >
                     <b-row align-v="start" align-h="around" class="watch mb-1" :class="!((drag) && (draggingId != watch.id)) ? '' : 'bg-light-green'" 
                      no-gutters>
                         <watch-flags 
@@ -21,7 +21,7 @@
                                     <b-img
                                     @click="selectWatch(watch)"
                                     :src="watch.src" 
-                                    fluid class="pointer p-xl-1 border-xl mx-auto">
+                                    fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
                                     </b-img>
                                 </b-col>
                                 <b-col cols="12" xl="6" class="d-none d-md-block mx-auto mt-md-2 mt-xl-0">
@@ -157,10 +157,14 @@ export default {
             let watchDetails = { watchToRemove: this.watchToRemove, reasonsWatchMoved: this.reasonsWatchMoved }
             this.$store.dispatch('createRemoveWatch', watchDetails);
             this.$store.dispatch('removeExistingWatch', this.watchToRemove.id).then(() => {
-                this.$store.dispatch('loadUserCollection');         
+                // TODO: NOT THIS
+                setTimeout(() => {
+                    this.$store.dispatch('getNumberFSOT');
+                    this.$store.dispatch('loadUserCollection');
+                    this.resetReasonsWatchMoved();
+                    this.$refs.removeWatchModal.hide();
+                }, 500)       
             })   
-            this.resetReasonsWatchMoved();
-            this.$refs.removeWatchModal.hide();
         },
 
         favoriteToggle(watchId) {
@@ -274,10 +278,24 @@ export default {
         border: 1px solid lightgray;
     }
 
+    .watchImg {
+            width: auto;
+            height: 10rem;
+        }
+
+    .tallWatchImg {
+        width: auto;
+        height: 15rem;
+    }
+
 
     @media(max-width: 1000px) {
         .border-xl{
             border: none;
+        }
+
+        .watchImg {
+            height: 10rem;
         }
     }
 
@@ -304,6 +322,10 @@ export default {
             font-size: .85rem;
             padding: .1em !important;
             
+        }
+
+        .watchImg {
+            height: 5rem;
         }
     }
 

@@ -1,13 +1,13 @@
 <template>
     <b-container fluid>
         <b-row no-gutters>
-            <b-col cols="11" class="mx-auto center bg-white p-0 m-0" v-if="isPreviewBox">
+            <b-col cols="12" class="mx-auto center bg-white p-0 m-0" v-if="isPreviewBox">
 
                 <label class="file-select">
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
-                    <div class="select-button pointer bg-white p-1">
+                    <div class="select-button pointer p-0 p-md-2 bg-white">
                     <!-- Display the filename if a file has been selected. -->
-                        <b-img src="http://localhost:8081/api/static-assets/add-img-icon.png" fluid></b-img>
+                        <b-img class="mt-3 mt-md-2" src="http://localhost:8081/api/static-assets/add-img-icon.png" fluid></b-img>
                     </div>
                     <!-- Now, the file input that we hide. -->
                     <input type="file" @change="uploadImagesToAwsS3()"/>
@@ -19,8 +19,7 @@
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
                     <div class="select-button pointer">
                     <!-- Display the filename if a file has been selected. -->
-                    <span v-if="value">Selected Files: {{value.name}}</span>
-                    <span v-else>Select Images</span>
+                    <span>Select Images</span>
                     </div>
                     <!-- Now, the file input that we hide. -->
                     <input type="file" @change="uploadImagesToAwsS3()"/>

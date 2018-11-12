@@ -4,12 +4,12 @@
             <!-- Add Img Row -->
 
             <b-row align-h="center" align-v="center" :class="addWatchCount == 1 ? '' : 'hidden'" no-gutters>
-                <b-col cols="11" class="p-0 m-0">
+                <b-col cols="12" class="p-0 m-0">
                     <b-row align-h="start">
-                        <b-col cols="2" class="border box-shadow p-1 m-1 addWatchContainer h-100 w-100" v-if="addWatch.src">
-                            <b-img :src="addWatch.src" fluid class="w-100 h-100"></b-img>
+                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="addWatch.src">
+                            <b-img :src="addWatch.src" fluid></b-img>
                         </b-col>
-                        <b-col cols="2" class="border box-shadow p-0 m-1 addWatchContainer">
+                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile">
                             <file-selector id="fileSelector" :isPreviewBox="true" v-model="file" v-on:setImages="setImages"></file-selector>
                         </b-col>
                     </b-row>
@@ -624,9 +624,14 @@ export default {
 </script>
 
 <style scoped>
+    .imgTile {
+       width: 100%;
+       height: 9rem; 
+    }
+
     .addWatchContainer {
-        width: 100% !important;
-        height: 100% !important;
+        width: 100%;
+        height: 100%;
     }
 
     .previewBox {
@@ -692,6 +697,11 @@ export default {
     @media(max-width: 761px) {
         ul {
         max-width: 100%;
+        }
+
+        .imgTile {
+        width: 100%;
+        height: 7rem; 
         }
     }
 </style>

@@ -1,17 +1,30 @@
 <template>
-    <b-container class="m-0 p-0">
-        <b-row>            
+    <b-container>
+        <b-row no-gutters>            
             <b-col>
                 <b-form @submit.prevent="submit">
                     <b-card
-                    img-src="https://blog.propertyroom.com/wp-content/uploads/2015/07/Watch-Collect.jpg"
+                    img-src="http://localhost:8081/api/static-assets/watcheshomecardbg.jpg"
                             img-alt="Card image"
                             
-                            class="m-0 relative"
+                            class="m-0 relative w-100"
                             >
-                        <div class="card-text mx-auto"> 
+                        <div class="card-text mx-auto w-100"> 
                             <h4>Manage your collection!</h4>
                             <b-alert show v-bind:variant="responseStyle" v-if="showAlert">{{responseMessage}}</b-alert> 
+                            <!-- <b-row no-gutters class="py-2 pb-3">
+                                <b-col cols="12" md="7">
+                                    <li>Manage your watch collection</li>
+                                    <li>Upload photos of watches</li>
+                                    <li>40+ watch attributes</li>
+                                </b-col>
+                                <b-col cols="12" md="5">
+                                    <li>Filter by 20+ traits</li>
+                                    <li>Find new piecs</li>
+                                    <li>Filter your collection</li>
+                                </b-col>
+                            </b-row> -->
+                            
                             <b-form-group id="credentials"
                                 v-if="card == 1"
                                 description="We'll never share your email with anyone.">
@@ -66,7 +79,7 @@
                                     <b-button variant="success" :disabled="!form.firstName || !form.lastName" type="submit" v-if="card == 2">Finish</b-button>
                                 </b-col>
                                 <b-col cols="8" class="right-align">
-                                    <p class="h8 m-1 ">Already a user? <span class="link nowrap" @click="toggleAuthChild">Login Here</span></p>
+                                    <p class="h8 m-1">Already a user? <span class="link nowrap" @click="toggleAuthChild">Login Here</span></p>
                                 </b-col>
                             </b-row>
                         </div>
@@ -180,9 +193,5 @@
 
     .card {
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .card-img {
-        max-width: 600px;
     }
 </style>

@@ -9,9 +9,9 @@
   <b-collapse is-nav id="nav_collapse" class="rubik">  
 
     <b-navbar-nav class="mt1 white ml-0 ml-md-5">
-        <b-nav-item v-if="getAuth">My Profile</b-nav-item>
+        <b-nav-item v-if="getAuth"><router-link to="/profile">My Profile</router-link></b-nav-item>
         <b-nav-item class="ml-0 ml-lg-4 oswlad" v-if="getAuth">Buy | Sell | Trade</b-nav-item>
-        <b-nav-item>Discover</b-nav-item>
+        <b-nav-item><router-link to="/discover"> Discover</router-link></b-nav-item>
         <b-nav-item>Watch News</b-nav-item> 
         <b-nav-item @click="logout" class="relative mobile-only" v-if="getAuth">Logout</b-nav-item>     
         <!-- <b-nav-item class="absolute t0 r0 p-4 pt-0 w-50 d-md-none" right> -->

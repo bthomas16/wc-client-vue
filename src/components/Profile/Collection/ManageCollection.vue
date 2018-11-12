@@ -90,7 +90,7 @@
                     <b-button variant="info" class="my-0" size="sm" @click="toggleIsManagingCollection" block>Manage Collection</b-button>
                 </b-col>
             </b-row>
-            <b-row no-gutters align-v="center" align-h="start" class="w-75 m-w-100 mx-auto px-3 px-md-5 mt-md-2" v-if="!isManagingCollection">
+            <b-row no-gutters align-v="center" align-h="start" class="w-75 mw-100 mx-auto px-3 px-md-5 mt-md-2" v-if="!isManagingCollection">
                 <b-col cols="4" md="auto" class="mt-1 mt-md-0 left-align left nowrap">
                     <b-form-checkbox
                         id="toggleFlags"
@@ -234,6 +234,8 @@ export default {
 
         filterBySearchTerm(eventValue) {
             console.log(eventValue)
+            this.sortCategory = null;
+            this.categoryOption = null;
             this.$store.dispatch('getFilteredCollectionBySearchTerm', eventValue.toLowerCase())
         },
 
@@ -290,11 +292,5 @@ export default {
         outline: none;
         border:none;
     }
-
-    @media(max-width:766px) {
-        .m-w-100 {
-        width: 100vw !important;
-    }
-}
 </style>
 
