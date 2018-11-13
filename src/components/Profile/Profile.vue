@@ -28,8 +28,6 @@ import ProfileInfo from './ProfileInfo.vue';
 import Collection from './Collection/Collection.vue';
 import Sidebar from './Sidebar.vue';
 import Feed from './Feed/Feed.vue';
-import store from '../../State/store';
-
 
 export default {
     components: {
@@ -37,6 +35,13 @@ export default {
         appCollection: Collection,
         appSidebar: Sidebar,
         appFeed: Feed
+    },
+
+
+    data: function() {
+        return {
+
+        }
     },
 
     methods: {

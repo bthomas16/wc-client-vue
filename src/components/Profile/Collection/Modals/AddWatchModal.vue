@@ -10,11 +10,11 @@
                             <b-img :src="addWatch.src" fluid></b-img>
                         </b-col>
                         <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile">
-                            <file-selector id="fileSelector" :isPreviewBox="true" v-model="file" v-on:setImages="setImages"></file-selector>
+                            <file-selector id="fileSelector" :isPreviewBox="true" v-model="file" v-on:setImagesOnAddWatch="setImagesOnAddWatch"></file-selector>
                         </b-col>
                     </b-row>
                 </b-col>
-                <file-selector id="fileSelector" :isPreviewBox="false" v-model="file" v-on:setImages="setImages" class="mt-4"></file-selector>
+                <file-selector id="fileSelector" :isPreviewBox="false" v-model="file" v-on:setImagesOnAddWatch="setImagesOnAddWatch" class="mt-4"></file-selector>
                 <b-col cols="12"><h6 cols="12" class="center mt-3" >Add Some Images</h6></b-col>     
             </b-row>
 
@@ -437,7 +437,7 @@
 
 <script>
 import axios from 'axios';
-import FileSelector from '../../../FileSelector.vue';
+import FileSelector from '../FileSelector.vue';
 
 export default {
     components: {
@@ -606,7 +606,7 @@ export default {
             localStorage.setItem('addWatch', specs);
         },
 
-        setImages(data) {
+        setImagesOnAddWatch(data) {
             console.log('setting data', data)
             // data.forEach(image => {
                 console.log(data, 'das it')

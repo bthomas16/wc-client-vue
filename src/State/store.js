@@ -576,7 +576,7 @@ const actions =
             context.commit(LOADING);
             return axios({
                 method: 'POST',
-                url: '/api/watch/upload',
+                url: '/api/upload/watch-images',
                 headers: { 
                     'Content-Type': 'multipart/form-data',
                      'authorization': localStorage.getItem('watchJwt')
@@ -584,12 +584,60 @@ const actions =
                 data: imagesFormData
             })
             .then((res) => {
+                context.commit(NOT_LOADING);
                 return res.data.uploadedImagesData;
             }).catch((err) => {
                 context.commit(INVALIDATE_JWT);               
                 context.commit(SERVER_VALIDATION_ERROR);   
                 return err;  
         })
+    },
+
+    uploadProfileImageToAwsS3(context, image) {     
+        let imageFormData = new FormData();
+        imageFormData.append('image[' + 1 + ']', image);
+            context.commit(LOADING);
+            return axios({
+                method: 'PUT',
+                url: '/api/upload/profile-image',
+                headers: { 
+                    'Content-Type': 'multipart/form-data',
+                     'authorization': localStorage.getItem('watchJwt')
+                },
+                data: imageFormData
+            })
+            .then((res) => {
+                context.commit(NOT_LOADING);
+                return res.data.data;
+            }).catch((err) => {
+                context.commit(NOT_LOADING);
+                context.commit(INVALIDATE_JWT);               
+                context.commit(SERVER_VALIDATION_ERROR);   
+                return err;  
+        })
+    },
+
+    editUserProfile(context, formData) {
+        context.commit(LOADING);
+        return axios({
+            method: 'PUT',
+            url: '/api/user/edit',
+            headers: { 
+                'Content-Type': 'application/json',
+                 'authorization': localStorage.getItem('watchJwt')
+            },
+            data: imageFormData
+        })
+        .then((res) => {
+            context.commit(NOT_LOADING);
+            return res.data.data;
+        }).catch((err) => {
+            context.commit(NOT_LOADING);
+            context.commit(INVALIDATE_JWT);               
+            context.commit(SERVER_VALIDATION_ERROR);   
+            return err;  
+    })
+
     },
 
     serverValidationError(context, err) {

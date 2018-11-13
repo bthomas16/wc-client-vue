@@ -10,8 +10,8 @@
                             class="m-0 relative w-100"
                             >
                         <div class="card-text mx-auto w-100"> 
-                            <h4>Manage your collection!</h4>
-                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert">{{responseMessage}}</b-alert> 
+                            <p class="h4 m-h2">Register -<span class="nowrap"> Manage your collection!</span></p>
+                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="p-0">{{responseMessage}}</b-alert> 
                             <!-- <b-row no-gutters class="py-2 pb-3">
                                 <b-col cols="12" md="7">
                                     <li>Manage your watch collection</li>

@@ -2,7 +2,6 @@
     <b-container>
         <b-row no-gutters>            
             <b-col cols="12" class="mx-auto" align-h="center">
-                <b-alert v-if="showAlert" v-bind:variant="responseStyle">{{responseMessage}}</b-alert>
                 <b-form @submit.prevent="onSubmit">
                     <b-card
                         img-src="http://localhost:8081/api/static-assets/watcheshomecardbg.jpg"
@@ -10,8 +9,8 @@
                         class="m-0 relative"
                         >
                         <div class="card-text mx-auto"> 
-                            <h4>Login to manage your collection!</h4>
-                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert">{{responseMessage}}</b-alert> 
+                            <p class="h4 m-h2">Login -<span class="nowrap"> Manage your collection!</span></p>
+                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="py-1 my-1">{{responseMessage}}</b-alert> 
                             <b-form-group id="exampleInputGroup1"
                             label="Email address:"
                             label-for="email">

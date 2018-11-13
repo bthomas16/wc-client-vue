@@ -2,7 +2,6 @@
     <b-container fluid>
         <b-row no-gutters>
             <b-col cols="12" class="mx-auto center bg-white p-0 m-0" v-if="isPreviewBox">
-
                 <label class="file-select">
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
                     <div class="select-button pointer p-0 p-md-2 bg-white">
@@ -44,7 +43,7 @@
                 this.$store.dispatch('uploadImagesToAwsS3', files)
                 .then(data => {
                     console.log('omg', data[0])
-                    this.$emit('setImages', data[0]);
+                    this.$emit('setImagesOnAddWatch', data[0]);
                 }).catch(err => console.log(err));
             }
         }
@@ -67,7 +66,7 @@
 
     /* Don't forget to hide the original file input! */
     .file-select > input[type="file"] {
-    display: none;
+        display: none;
     }
 </style>
 

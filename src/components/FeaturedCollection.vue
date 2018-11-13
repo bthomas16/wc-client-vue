@@ -14,12 +14,12 @@
                                 </b-img>
                             </b-col>
                             <b-col cols="12 center bg-white-opaque my-0 px-3 pt-1">
-                                <b-img id="brandLogo" :src="watch.logoSrc" fluid class="mx-auto p-2 p-md-3"></b-img>
+                                <b-img id="brandLogo" :src="watch.logoSrc" fluid class="mx-auto p-1 p-md-3 p-lg-4 w-75"></b-img>
                             </b-col>
                             <b-col cols="12" class="mx-auto p-1 bg-white-opaque">
-                                <p class="my-0 h5">{{watch.brand}}</p>
-                                <p class="my-0 h6 m-h3">{{watch.name}}</p>
-                                <p class="green mb-0 m-h3">${{watch.value}}</p>
+                                <p class="my-0 h5 m-h5">{{watch.brand}}</p>
+                                <p class="my-0 h6 m-h4">{{watch.name}}</p>
+                                <p class="green mb-0 m-h5">${{watch.value}}</p>
                             </b-col>
                         </b-row>
                     </b-col>
