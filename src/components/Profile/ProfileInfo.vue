@@ -21,7 +21,7 @@
                     <edit-profile :userProfileEditing="userProfileEditing"></edit-profile>
                     <div slot="modal-footer" class="w-100 mt-0 p-0">
                         <b-row no-gutters align-v="center">
-                            <b-col cols="9" class="mt-3" v-if="userProfileEditing.newPassword">
+                            <b-col cols="9" class="mt-3" v-if="userProfileEditing.newPassword && userProfileEditing.confirmNewPassword">
                                 <p class="red m-h3 nowrap" v-if="!userProfileEditing.email">Must provide an email address</p>
                                 <p class="red m-h3 nowrap" v-if="!userProfileEditing.firstName">Must provide a first name</p>
                                 <p class="red m-h3 nowrap" v-if="userProfileEditing.newPassword.length < 4 && userProfileEditing.newPassword != ''">Password must have 4 characters</p>

@@ -1,5 +1,5 @@
 <template>
-    <b-container v-if="!isUserLoaded" class="z-4">
+    <b-container v-if="!isCollectionLoaded" class="z-4">
         <b-row align-h="center" align-v="center">
             <b-col class="mx-auto mt-5 center">LOADING...</b-col>
         </b-row>
@@ -313,6 +313,10 @@ export default {
 
         isUserLoaded() {
             return this.$store.state.isUserLoaded;
+        },
+
+        isCollectionLoaded() {
+            return this.$store.state.isCollectionLoaded;
         },
 
         isFilteringCollection() {
