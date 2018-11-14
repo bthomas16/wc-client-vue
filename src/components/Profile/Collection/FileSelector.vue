@@ -13,7 +13,6 @@
                 </label>
             </b-col>
            <b-col cols="8" md="6" class="mx-auto center" v-else>
-
                 <label class="file-select">
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
                     <div class="select-button pointer">

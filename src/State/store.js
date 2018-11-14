@@ -626,11 +626,11 @@ const actions =
                 'Content-Type': 'application/json',
                  'authorization': localStorage.getItem('watchJwt')
             },
-            data: imageFormData
+            data: formData
         })
         .then((res) => {
             context.commit(NOT_LOADING);
-            return res.data.data;
+            return res.data;
         }).catch((err) => {
             context.commit(NOT_LOADING);
             context.commit(INVALIDATE_JWT);               
