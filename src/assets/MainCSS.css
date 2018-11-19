@@ -59,6 +59,10 @@
     outline: none;
 }
 
+.d-none {
+    display: none !important;
+}
+
 
 /* COLORS */
 
@@ -68,6 +72,10 @@
 
 .blue {
     color: #56A3A6;
+}
+
+.bg-black {
+    background-color: black;
 }
 
 .bg-blue {

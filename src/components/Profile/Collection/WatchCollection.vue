@@ -279,13 +279,14 @@ export default {
     }
 
     .watchImg {
-            width: auto;
-            height: 10rem;
+            width: 100%;
+            height: auto;
+            /* max-height: 10rem; */
         }
 
     .tallWatchImg {
         width: auto;
-        height: 15rem;
+        /* max-height: 25rem; */
     }
 
 
@@ -295,7 +296,7 @@ export default {
         }
 
         .watchImg {
-            height: 10rem;
+            /* height: 10rem; */
         }
     }
 
@@ -325,7 +326,8 @@ export default {
         }
 
         .watchImg {
-            height: 5rem;
+            /* height: 5rem; */
+            width: 100%
         }
     }
 

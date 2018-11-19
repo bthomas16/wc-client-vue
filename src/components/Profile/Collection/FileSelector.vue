@@ -1,12 +1,12 @@
 <template>
     <b-container fluid>
         <b-row no-gutters>
-            <b-col cols="12" class="mx-auto center bg-white p-0 m-0" v-if="isPreviewBox">
+            <b-col cols="10" class="mx-auto center bg-white p-0 mt-2 mt-sm-2 mt-md-4 mt-lg-0" v-if="isPreviewBox">
                 <label class="file-select">
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
-                    <div class="select-button pointer p-0 p-md-2 bg-white">
+                    <div class="select-button pointer bg-white">
                     <!-- Display the filename if a file has been selected. -->
-                        <b-img class="mt-3 mt-md-2" src="http://localhost:8081/api/static-assets/add-img-icon.png" fluid></b-img>
+                        <b-img class="" src="http://localhost:8081/api/static-assets/add-img-icon.png" fluid></b-img>
                     </div>
                     <!-- Now, the file input that we hide. -->
                     <input type="file" @change="uploadImagesToAwsS3()"/>
@@ -17,7 +17,7 @@
                     <!-- We can't use a normal button element here, as it would become the target of the label. -->
                     <div class="select-button pointer">
                     <!-- Display the filename if a file has been selected. -->
-                    <span>Select Images</span>
+                    <span class="m-h2">Select Images</span>
                     </div>
                     <!-- Now, the file input that we hide. -->
                     <input type="file" @change="uploadImagesToAwsS3()"/>
@@ -55,7 +55,7 @@
         padding: 1rem;
 
         color: white;
-        background-color: #2EA169;
+        background-color: #56A3A6;
 
         border-radius: .3rem;
 

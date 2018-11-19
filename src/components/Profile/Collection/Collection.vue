@@ -8,7 +8,7 @@
          <b-row v-if="!Collection.length && !isFilteringCollection" align-h="center" no-gutters>
             <b-col cols="10" md="8" class="border my-5 center p-2 p-md-5" id="begin-collection">
                 <p class="h2 center">Welcome to your <span class="nowrap">Watch Collection!</span></p>  
-                <p class="h5 m-h2 mt-4 mt-md-5">Get started by adding a watch!</p>
+                <p class="h4 m-h2 mt-4 mt-md-5">Get started by adding a watch!</p>
                 <b-row>
                     <b-col cols="6" class="mx-auto my-3">
                         <b-button variant="success" class="my-2" size="lg" @click="addWatchModal" block>Add Watch</b-button>
@@ -34,6 +34,7 @@
                 
                 <watch-collection 
                     v-if="Collection.length"
+                    v-show="isCollectionLoaded"
                     @selectWatch="selectWatch" 
                     @editWatchModal="editWatchModal" 
                     @orderChanged="orderChanged"
@@ -89,16 +90,16 @@
                 :addWatchCount="addWatchCount">
             </add-watch-modal>
             <b-row slot="modal-footer" no-gutters class="w-100" align-h="end" align-v="center">
-                <b-col cols="5">
+                <b-col cols="4">
                     <!-- Potential Progress Bar -->
                     <p v-if="!addWatch.name && addWatchCount == 2" class="red p-0 m-0 h5 m-h4">Please add a name for this watch</p>
                 </b-col>
-                <b-col cols="7" class="right-align">
+                <b-col cols="8" class="right-align">
                     <b-btn  size="sm" class="center white" :class="addWatchCount == 1 ? 'hidden' : ''" variant="warning" @click="addWatchCount--">
                        Previous
                     </b-btn>
                     <b-btn size="sm" :class="addWatchCount == 1 ? '' : 'hidden'" variant="info" @click="addWatchCount++" :disabled="!addWatch.src">
-                        Details
+                        Add Details
                     </b-btn>
                     <b-button size="sm" variant="info" @click="addWatchCount++" :class="addWatchCount == 2 ? '' : 'hidden'" :disabled="!addWatch.name">
                         Continue
@@ -326,7 +327,9 @@ export default {
 
     created: function() 
     {
-        this.$store.dispatch('loadUserCollection');
+        this.$store.dispatch('loadUserCollection').then(() => {
+            this.isL
+        })
         this.$store.dispatch('getFavorites');
     }
 }

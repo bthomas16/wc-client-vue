@@ -10,7 +10,7 @@
                         >
                         <div class="card-text mx-auto"> 
                             <p class="h4 m-h2">Login -<span class="nowrap"> Manage your collection!</span></p>
-                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="py-1 my-1">{{responseMessage}}</b-alert> 
+                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="py-1 py-md-0 my-1 m-h2">{{responseMessage}}</b-alert> 
                             <b-form-group id="exampleInputGroup1"
                             label="Email address:"
                             label-for="email">
@@ -35,7 +35,7 @@
                             </b-form-group>
                             <b-row align-v="center">
                                 <b-col cols="4">
-                                    <b-button type="submit" variant="success">Submit</b-button>
+                                    <b-button type="submit" variant="success" :disabled="!form.email || !form.password">Submit</b-button>
                                 </b-col>
                                 <b-col cols="8" class="right-align">
                                     <p class="h8 m-1">Not a user? <span class="link nowrap" @click="toggleAuthChild">Register Here</span></p>
@@ -67,10 +67,14 @@
     methods: {
         onSubmit () 
         {
+            this.showAlert = false;
             console.log('submitting', this.form)
-            this.$store.dispatch('login', this.form).then(res => {
-                if(res.isSuccess)
+            this.$store.dispatch('login', this.form).then((res) => {
+                console.log('login back', res)
+                if(res.isSuccess) {
                     this.$router.push({ path: '/profile'}); 
+                    this.showAlert = false;
+                }   
                 else {
                     this.showAlert = true;
                     this.responseStyle = 'danger';

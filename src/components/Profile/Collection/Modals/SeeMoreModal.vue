@@ -93,7 +93,7 @@
 
             
             <b-col class="mt-3" cols="12" v-if="isUsersWatch">
-            <h6 class="lightgray mx-auto mt-2">This section is only visible to you</h6>                        
+            <h6 class="lightgray mx-auto mt-2 m-h2 nowrap">This section is only visible to you</h6>                        
             <b-col v-if="!isEdit" cols="8" class="border-bottom mx-auto"></b-col>
                 <b-row align-v="center">
                     <b-col cols="6">

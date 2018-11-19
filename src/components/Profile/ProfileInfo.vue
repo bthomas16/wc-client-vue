@@ -2,10 +2,13 @@
     <b-container>
         <b-row align-v="center" align-h="center" class="py-3 relative border">
             <b-col class="absolute t-0 right-align">
-                <b-img fluid src="http://localhost:8081/api/static-assets/settings.png" v-b-modal.editProfileModal id="settingIcon" class="pointer"></b-img>
+                    <b-img fluid src="http://localhost:8081/api/static-assets/settings.png" v-b-modal.editProfileModal id="settingIcon" class="pointer"></b-img>
             </b-col>
-            <b-col cols="5" sm="4" md="12" class="m-0 mx-auto center pt-lg-1">
-                <b-img :src="User.imgSrc || 'http://localhost:8081/api/static-assets/blankprofpic.png'" fluid style="height: auto; max-height: 125px;" class="profPic mx-auto box-shadow-light" rounded></b-img>
+            <b-col cols="5" sm="4" md="12" class="m-0 mx-auto center p-md-2 pt-lg-3">
+                
+                    <b-img v-show="isLoaded" @load="loaded" :src="User.imgSrc || 'http://localhost:8081/api/static-assets/blankprofpic.png'" fluid style="height: auto; max-height: 125px;" class="profPic mx-auto box-shadow-light" rounded></b-img>
+                    <div id="loader" class="h-100" v-show="!isLoaded">Loading...</div>
+                
             </b-col>
             <b-col cols="7" sm="7" md="12" class="left mx-auto p-0 pl-2 mt-2" >
                 <p class="p-0 my-1 ml-1 h5 m-h2 bold"><strong>{{User.firstName}} {{User.lastName}}</strong></p>
@@ -18,7 +21,7 @@
                     <div slot="modal-title">
                         Editing: {{userProfileEditing.firstName}}
                     </div>
-                    <edit-profile :userProfileEditing="userProfileEditing"></edit-profile>
+                    <edit-profile :userProfileEditing="userProfileEditing" :errorObj="errorObj"></edit-profile>
                     <div slot="modal-footer" class="w-100 mt-0 p-0">
                         <b-row no-gutters align-v="center">
                             <b-col cols="9" class="mt-3" v-if="userProfileEditing.newPassword && userProfileEditing.confirmNewPassword">
@@ -34,16 +37,15 @@
                                 <p class="red m-h3 nowrap" v-if="(userProfileEditing.newPassword.length >= 4 ) && (userProfileEditing.confirmNewPassword.length >= 4) && (!userProfileEditing.oldPassword) && (userProfileEditing.newPassword)">Please provide your old password</p>
                             </b-col>
                             <b-col>
-                                <b-btn class="float-right" variant="info"
+                                <input class="float-right btn bg-green white" variant="info" type="submit" value="Submit"
                                     @click="submitEditProfile"
                                     :disabled="
                                     (!userProfileEditing.email) || (!userProfileEditing.firstName) ||
                                     (userProfileEditing.newPassword != userProfileEditing.confirmNewPassword) ||
                                     (
                                         (userProfileEditing.oldPassword == '') && (userProfileEditing.newPassword != '')
-                                    )">
-                                    Submit
-                                </b-btn>
+                                    )"
+                                />
                             </b-col>
                         </b-row>
                     </div>
@@ -67,14 +69,35 @@
     data () {
         return {
             userProfileEditing: {},
+            errorObj: {
+                isSuccess: true,
+                message: ''
+            },
+            isShowErrorMessage: false,
+            isLoaded: false
         }
     },
     methods: {
         submitEditProfile() {
+            this.isShowErrorMessage = false;            
             this.$store.dispatch('editUserProfile', this.userProfileEditing).then((data) => { //edit profile
             console.log('got this fuck back', data)
+            if (data.isSuccess) {
+                this.$refs.editProfileModal.hide();
                 this.$store.dispatch('user'); //reload user
-            })
+            }
+            else {
+                this.errorObj.isSuccess = data.isSuccess;
+                this.errorObj.message = data.message;
+                console.log('new errorObj is', this.errorObj)
+            }
+        }).catch(err => {
+            console.log(err)
+        })
+        },
+
+        loaded() {
+            this.isLoaded = true;
         }
     },
     computed: {
@@ -97,7 +120,14 @@
 
         Favorites() {
             return this.$store.state.Favorites.length;
-        }
+        },
+
+        // errorObj() {
+        //     return {
+        //         isSuccess: true,
+        //         message: 'Test'
+        //     }
+        // }
     },
 
     created: function() {
@@ -123,6 +153,10 @@
         height:140px;
     }
 
+}
+
+#loader {
+    height:10rem !important;
 }
   
 </style>

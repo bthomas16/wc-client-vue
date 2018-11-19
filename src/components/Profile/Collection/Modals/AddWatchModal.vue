@@ -360,7 +360,7 @@
             <b-row id="add-keeping-house" :class="addWatchCount == 4 ? '' : 'hidden'" align-h="center" no-gutters>
                 <!-- <b-col cols="8" v-if="!isEditMode" class="border-bottom mx-auto"></b-col> -->
 
-                <h6 class="gray center mt-2 border-bottom">This section is only visible to you</h6>                        
+                <p class="gray center mt-2 border-bottom m-h2 nowrap">This section is only visible to you</p>                        
                 
                 <b-col class="mt-3" cols="12">
                     <b-row align-v="center">
@@ -626,7 +626,7 @@ export default {
 <style scoped>
     .imgTile {
        width: 100%;
-       height: 9rem; 
+       height:auto; 
     }
 
     .addWatchContainer {
@@ -701,7 +701,7 @@ export default {
 
         .imgTile {
         width: 100%;
-        height: 7rem; 
+        min-height: 6rem; 
         }
     }
 </style>

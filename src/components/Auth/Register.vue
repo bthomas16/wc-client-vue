@@ -11,7 +11,7 @@
                             >
                         <div class="card-text mx-auto w-100"> 
                             <p class="h4 m-h2">Register -<span class="nowrap"> Manage your collection!</span></p>
-                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="p-0">{{responseMessage}}</b-alert> 
+                            <b-alert show v-bind:variant="responseStyle" v-if="showAlert" class="py-1 py-md-0 my-1">{{responseMessage}} <em v-if="isRefreshPage" @click="reloadPage"> - Try Again</em></b-alert> 
                             <!-- <b-row no-gutters class="py-2 pb-3">
                                 <b-col cols="12" md="7">
                                     <li>Manage your watch collection</li>
@@ -72,10 +72,10 @@
                                             >
                                 </b-form-input>
                             </b-form-group>
-                            <h6 class="red thin h7">{{errMsg}}</h6>
+                            <h6 class="red thin h7">{{passwordErrMsg}}</h6>
                             <b-row align-v="center">
                                 <b-col cols="4">
-                                    <b-button variant="success" @click="card=2" :disabled="form.password.length <= 4" v-if="card == 1">Continue</b-button>
+                                    <b-button variant="success" @click="card=2" :disabled="form.password.length < 4" v-if="card == 1">Continue</b-button>
                                     <b-button variant="success" :disabled="!form.firstName || !form.lastName" type="submit" v-if="card == 2">Finish</b-button>
                                 </b-col>
                                 <b-col cols="8" class="right-align">
@@ -92,6 +92,9 @@
 
 <script>
     import axios from 'axios';
+
+
+
     export default {
     data () {
         return {
@@ -106,8 +109,9 @@
         showAlert: false,
         responseMessage: '',
         responseStyle: 'light',
+        isRefreshPage: false,
         showForm: true,
-        errMsg: '',
+        passwordErrMsg: '',
         formValid: true
         }
     },
@@ -117,12 +121,13 @@
             this.showAlert = false;
             this.form.email.toLowerCase();
             this.$store.dispatch('register', this.form)
-            .then(res => {
+            .then((res) => {
                 if(res.isSuccess) this.$router.push({path: '/profile'});
                 else {
                     this.showAlert = true;
                     this.responseMessage = res.message;
                     this.responseStyle = 'danger';
+                    this.isRefreshPage = res.isRefreshPage;
                 }
             }).catch(err => {
                 this.showAlert = true;
@@ -138,6 +143,7 @@
 
         validateEmail(email) 
         {
+            // regex expression making sure email is in valid format
             var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
             if(re.test(email)) {
                 this.showPassword = true;
@@ -152,13 +158,13 @@
 
         validatePassword(password) 
         {
-            if(password.length <= 4) 
+            if(password.length < 4) 
             {
-                this.errMsg = 'Password must be more than 4 characters';
+                this.passwordErrMsg = 'Password must be at least 4 characters';
                 return false;
             }
             else {
-                this.errMsg = '';
+                this.passwordErrMsg = '';
                 return true;
             }
         },
@@ -168,6 +174,10 @@
             if(first.length && last.length) return true;
             else return false;
         },
+
+        reloadPage() {
+            location.reload();
+        }
 
         // isDuplicateEmail(email)
         // {

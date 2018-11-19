@@ -1,12 +1,12 @@
 
 <template>
-    <b-container>
-        <b-row>
-            <b-col cols="12" class="mt-3">
-                <b-row>
-                    <b-col cols="4" v-for="watch in FeaturedWatches" :key="watch.id" class="pointer p-1 pl-0"  @click="selectWatch(watch)">
+    <b-container fluid>
+        <b-row no-gutters>
+            <b-col cols="12">
+                <b-row no-gutters>
+                    <b-col cols="6" md="4" v-for="watch in FeaturedWatches" :key="watch.id" class="pointer p-1 pl-0"  @click="selectWatch(watch)">
                         <b-row align-v="start" align-h="center" class="mb-3 bg-white" no-gutters>
-                            <b-col cols="12" class="border py-1 py-md-3 bg-white">
+                            <b-col cols="12" class="border p-1 p-md-3 bg-white">
                                 <b-img
                                 @click="selectWatch(watch)"
                                 :src="watch.src" 

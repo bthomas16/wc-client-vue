@@ -9,6 +9,15 @@
 </template>
 
 <script>
+
+    var img1 = new Image();
+    img1.onload = function() {  }
+    img1.src = "http://localhost:8081/api/static-assets/watcheshomecardbg.jpg";
+
+    var img2 = new Image();
+    img2.onload = function() {  }
+    img2.src = "http://localhost:8081/api/static-assets/tablebg.jpg";
+    
 import Header from './components/Header.vue'
 
   export default {

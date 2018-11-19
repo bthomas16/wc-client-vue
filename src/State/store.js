@@ -65,11 +65,12 @@ const state =
 const mutations = 
 {
     [LOADING](state) {
-        console.log('now true')
+        console.log('loading is true')
         state.isLoading = true;
     },
 
     [NOT_LOADING] (state) {
+        console.log('loading is false')
         state.isLoading = false;
     },
 
@@ -172,8 +173,8 @@ const mutations =
         state.isShowFlags = !state.isShowFlags;
     },
 
-    [TOGGLE_IS_SHOW_EDIT_FLAGS](state) {
-        state.isShowEditFlags = !state.isShowEditFlags;
+    [TOGGLE_IS_SHOW_EDIT_FLAGS](state, value) {
+        state.isShowEditFlags = value;
     },
 
     [FILTERING](state, value) {
@@ -200,45 +201,49 @@ const actions =
     login(context, formData) 
     {
         context.commit(LOADING); 
-        return new Promise((resolve, reject) => {
-                axios.post('/api/user/login', formData)
-                .then(res => {
-                    localStorage.setItem('watchJwt', res.data.token);
-                    context.commit(AUTH_SUCCESS, res.data.user);
-                    context.commit(NOT_LOADING);
-                    resolve(res.data)
-                }).catch(err => {
+        return axios.post('/api/user/login', formData)
+            .then(res => {
+                console.log('should login', res.data.isSuccess)
+                if (!res.data.isSuccess) {
+                    console.log(res.data, 'ok mostly fuck with me')
                     context.commit(NOT_LOADING);
                     context.commit(AUTH_FAILURE);
-                        reject(err.data);
-                })
-            }
-        )
+                    return res.data;
+                }
+                localStorage.setItem('watchJwt', res.data.token);
+                    context.commit(AUTH_SUCCESS, res.data.user);
+                    context.commit(NOT_LOADING);
+                    console.log(res.data, 'ok fuck with me')
+                    return res.data;
+            }).catch(err => {
+                console.log(err.data, 'ok srsly fuck with me')
+                context.commit(NOT_LOADING);
+                context.commit(AUTH_FAILURE);
+                return err.data;
+        });
     },
 
     register(context, formData) 
     {
-        context.commit(LOADING);
-        return new Promise((resolve, reject) => {
-            axios({
-                method: 'POST',
-                url: '/api/user/register',
-                data: formData
-            })
-            .then(res => {
-                localStorage.setItem('watchJwt', res.data.token);
-                context.commit(AUTH_SUCCESS, res.data.user);
-                context.commit(NOT_LOADING);                
-                resolve(res.data)
-            })
-            .catch(err => {
-                this.responseStyle = 'danger';
-                this.responseMessage = err.data.message;
-                this.form = {}; 
-                context.commit(AUTH_FAILURE );  
-                context.commit(NOT_LOADING);                   
-                reject(res.data)                              
-            })
+    context.commit(LOADING);
+    return axios({
+            method: 'POST',
+            url: '/api/user/register',
+            data: formData
+        })
+        .then(res => {
+            localStorage.setItem('watchJwt', res.data.token);
+            context.commit(AUTH_SUCCESS, res.data.user);
+            context.commit(NOT_LOADING);                
+            return res.data;
+        })
+        .catch(err => {
+            this.responseStyle = 'danger';
+            this.responseMessage = err.data.message;
+            this.form = {}; 
+            context.commit(AUTH_FAILURE );  
+            context.commit(NOT_LOADING);                   
+            return res.data;                            
         })
     },
 
@@ -510,9 +515,9 @@ const actions =
         context.commit('TOGGLE_IS_SHOW_FLAGS');
     },
 
-    toggleIsShowEditFlags(context) {
+    toggleIsShowEditFlags(context, value) {
         // NO LOADING NEEDED
-        context.commit('TOGGLE_IS_SHOW_EDIT_FLAGS');
+        context.commit('TOGGLE_IS_SHOW_EDIT_FLAGS', value);
     },
 
     getFilteredCollection(context, filterObj) {
@@ -642,6 +647,22 @@ const actions =
 
     serverValidationError(context, err) {
         context.commit(SERVER_VALIDATION_ERROR, err);
+    },
+
+    getWatchInfoById(context, watchInfoId) {
+        console.log('howdy', watchInfoId)
+    return axios({
+        method: 'GET',
+        url: '/api/discover/watch-info',
+        params: {
+            watchInfoId: watchInfoId
+        }
+        }).then(res => {
+            console.log('res from store', res)
+            return res.data.watchInfo;
+        }).catch(err => {
+            console.log(err);
+        })
     }
 }
 
