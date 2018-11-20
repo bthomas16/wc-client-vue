@@ -20,7 +20,7 @@
                                 <b-col cols="12" xl="6" class="mx-auto p-xl-1">
                                     <b-img
                                     @click="selectWatch(watch)"
-                                    :src="watch.src" 
+                                    :src="watch.src.images[0]" 
                                     fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
                                     </b-img>
                                 </b-col>

@@ -8,20 +8,20 @@
                 <b-row no-gutters v-if="isShowFlags && !isManagingCollection">
                     <!-- FSOT STATUS -->
                     <b-col cols="6" class="bg-red" v-if="(watch.isForSale && !watch.isForTrade)">
-                        <p id="forSaleIcon" class="detailIcon center pointer z4 flag m-0 white broder-right-white" >Sale</p>
+                        <p id="forSaleIcon" class=" center pointer z4 flag m-0 white broder-right-white" >Sale</p>
                     </b-col>
                     <b-col cols="6" class="bg-blue" v-if="(!watch.isForSale && watch.isForTrade)">
-                        <p id="forTradeIcon" class="detailIcon pointer z4 flag m-0 white broder-right-white center">Trade</p>
+                        <p id="forTradeIcon" class=" pointer z4 flag m-0 white broder-right-white center">Trade</p>
                     </b-col>
                     <b-col cols="6" v-if="(!watch.isForSale && !watch.isForTrade)" class="bg-blue">
-                        <p id="keeperIcon" class="detailIcon pointer z4 flag m-0 white broder-right-white center">Keeper</p>
+                        <p id="keeperIcon" class=" pointer z4 flag m-0 white broder-right-white center">Keeper</p>
                     </b-col>
                     <b-col cols="6" v-if="(watch.isForSale && watch.isForTrade)" class="bg-blue">
-                        <p id="fsotIcon" class="detailIcon pointer z4 flag m-0 white broder-right-white center fsot">FSOT</p>
+                        <p id="fsotIcon" class=" pointer z4 flag m-0 white broder-right-white center fsot">FSOT</p>
                     </b-col>
                     <!-- MOVEMENT TYPE -->
                     <b-col cols="6" v-if="watch.movementType" class="bg-red">
-                        <p id="movementTypeIcon" class="detailIcon center pointer z4 white flag m-0" :class="GetAbbreviatedWatchType(watch.movementType).length > 5 ? 'fitText' : ''">{{GetAbbreviatedWatchType(watch.movementType)}}</p>
+                        <p id="movementTypeIcon" class=" center pointer z4 white flag m-0" :class="GetAbbreviatedWatchType(watch.movementType).length > 5 ? 'fitText' : ''">{{GetAbbreviatedWatchType(watch.movementType)}}</p>
                     </b-col>
                 </b-row>
                 <b-row no-gutters v-if="isManagingCollection && isShowEditFlags">

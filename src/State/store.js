@@ -574,10 +574,10 @@ const actions =
     uploadImagesToAwsS3(context, images) {
         // context.commit(LOADING);        
         let imagesFormData = new FormData();
-        // for( var i = 0; i < images.length; i++ ){
-        //     let image = images[i];
-        imagesFormData.append('images[' + 1 + ']', images);
-        //   }
+        for( var i = 0; i < images.length; i++ ) {
+            let image = images[i];
+            imagesFormData.append('images[' + i + ']', image);
+          }
             context.commit(LOADING);
             return axios({
                 method: 'POST',
@@ -590,7 +590,7 @@ const actions =
             })
             .then((res) => {
                 context.commit(NOT_LOADING);
-                return res.data.uploadedImagesData;
+                return res.data.uploadedImages;
             }).catch((err) => {
                 context.commit(INVALIDATE_JWT);               
                 context.commit(SERVER_VALIDATION_ERROR);   

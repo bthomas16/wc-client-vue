@@ -17,7 +17,7 @@
                 class="w-100 px-2 my-0"
                 label="Who did you sell this watch to?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="Johnny Cash" v-model="reasonsWatchMoved.receivedBy"></b-form-input>
+                <b-form-input placeholder="Johnny Cash" v-model="reasonsWatchMoved.receivedBy"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -26,7 +26,7 @@
                 class="w-100 px-2 my-0"
                 label="How much did you sell this watch for?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="$200" v-model="reasonsWatchMoved.value"></b-form-input>
+                <b-form-input placeholder="$200" v-model="reasonsWatchMoved.value"></b-form-input>
             </b-form-group>
         </b-form-row>
 
@@ -38,7 +38,7 @@
                 class="w-100 px-2 my-0"
                 label="Who did you trade this watch for?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="John Smith" v-model="reasonsWatchMoved.receivedBy"></b-form-input>
+                <b-form-input placeholder="John Smith" v-model="reasonsWatchMoved.receivedBy"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -47,7 +47,7 @@
                 class="w-100 px-2 my-0"
                 label="What value did you trade this watch at?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="Orienteering" v-model="reasonsWatchMoved.value"></b-form-input>
+                <b-form-input placeholder="Orienteering" v-model="reasonsWatchMoved.value"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -86,7 +86,7 @@
                 class="w-100 px-2 my-0"
                 label="How much money did you receive?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="Orienteering"></b-form-input>
+                <b-form-input placeholder="Orienteering"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -95,7 +95,7 @@
                 class="w-100 px-2 my-0"
                 label="Who did you trade this watch to?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="John Smith"></b-form-input>
+                <b-form-input placeholder="John Smith"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -135,7 +135,7 @@
                 class="w-100 px-2 my-0"
                 label="Who did you gift this watch to?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="John Smith"></b-form-input>
+                <b-form-input placeholder="John Smith"></b-form-input>
             </b-form-group>
         </b-row>
 
@@ -147,7 +147,7 @@
                 class="w-100 px-2 my-0"
                 label="Which Charity did you donate this watch to?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="John Smith"></b-form-input>
+                <b-form-input placeholder="John Smith"></b-form-input>
             </b-form-group>
             <b-form-group id=""
                 horizontal
@@ -156,7 +156,7 @@
                 class="w-100 px-2 my-0"
                 label="What value did this watch hold?"
                 label-for="inputHorizontal">
-                <b-form-input id="inputHorizontal" placeholder="John Smith"></b-form-input>
+                <b-form-input placeholder="John Smith"></b-form-input>
             </b-form-group>
         </b-row>
     </b-container>

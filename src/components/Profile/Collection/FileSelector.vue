@@ -9,7 +9,7 @@
                         <b-img class="" src="http://localhost:8081/api/static-assets/add-img-icon.png" fluid></b-img>
                     </div>
                     <!-- Now, the file input that we hide. -->
-                    <input type="file" @change="uploadImagesToAwsS3()"/>
+                    <input type="file" @change="uploadImagesToAwsS3()" multiple/>
                 </label>
             </b-col>
            <b-col cols="8" md="6" class="mx-auto center" v-else>
@@ -20,7 +20,7 @@
                     <span class="m-h2">Select Images</span>
                     </div>
                     <!-- Now, the file input that we hide. -->
-                    <input type="file" @change="uploadImagesToAwsS3()"/>
+                    <input type="file" @change="uploadImagesToAwsS3()" multiple/>
                 </label>
             </b-col>
         </b-row>
@@ -37,12 +37,12 @@
 
         methods: {
             uploadImagesToAwsS3(e) {
-                console.log(event.target.files[0])
-                let files = event.target.files[0]
+                let files = event.target.files
+                console.log('foos', files)
                 this.$store.dispatch('uploadImagesToAwsS3', files)
                 .then(data => {
-                    console.log('omg', data[0])
-                    this.$emit('setImagesOnAddWatch', data[0]);
+                    console.log('omg', data)
+                    this.$emit('setImagesOnAddWatch', data);
                 }).catch(err => console.log(err));
             }
         }

@@ -1,9 +1,13 @@
 <template>
     <b-container>
         <b-row align-h="center" v-if="selectedWatch.src">
-            <b-col cols="8" class="mx-auto pb-3 border-bottom">
-                <b-img :src="selectedWatch.src" fluid></b-img>
-            </b-col>
+            <!-- <b-col cols="8" class="mx-auto pb-3 border-bottom"> -->
+                <carousel :per-page="1" >
+                    <slide v-for="image in selectedWatch.src.images" :key="image">
+                        <b-img :src="image" fluid></b-img>
+                    </slide>
+                </carousel>
+            <!-- </b-col> -->
         </b-row>
         <b-row align-h="start">
             <b-col class="mt-0 mt-md-1" cols="12">
@@ -130,9 +134,14 @@
 
 <script>
 import axios from 'axios';
+import { Carousel, Slide } from 'vue-carousel';
 
 export default {
     name: 'seeMoreModal',
+    components: {
+        Carousel,
+        Slide
+    },
     props: ['selectedWatch', 'isEdit'],
 
     data () {
@@ -140,7 +149,6 @@ export default {
             isUsersWatch: false,
             isShowDetails: false
         }
-        
     },
     methods: {
         watchStyleDisplayName(style) {

@@ -98,7 +98,7 @@
                     <b-btn  size="sm" class="center white" :class="addWatchCount == 1 ? 'hidden' : ''" variant="warning" @click="addWatchCount--">
                        Previous
                     </b-btn>
-                    <b-btn size="sm" :class="addWatchCount == 1 ? '' : 'hidden'" variant="info" @click="addWatchCount++" :disabled="!addWatch.src">
+                    <b-btn size="sm" :class="addWatchCount == 1 ? '' : 'hidden'" variant="info" @click="addWatchCount++" :disabled="!addWatch.src.images.length">
                         Add Details
                     </b-btn>
                     <b-button size="sm" variant="info" @click="addWatchCount++" :class="addWatchCount == 2 ? '' : 'hidden'" :disabled="!addWatch.name">
@@ -143,7 +143,7 @@ export default {
             selectedWatch: {},
             isSeeMore: false,
             addWatch: {
-               src: ''
+               src: { images: [] }
             },
             addWatchImages: [],
             isFeaturedWatch: false,
@@ -244,7 +244,7 @@ export default {
 
         createAddWatch() {
             this.addWatch = {
-                src: '',
+                src: { images: [] },
                 brand: '',
                 name: '',
                 isForSale: false,
@@ -327,9 +327,7 @@ export default {
 
     created: function() 
     {
-        this.$store.dispatch('loadUserCollection').then(() => {
-            this.isL
-        })
+        this.$store.dispatch('loadUserCollection');
         this.$store.dispatch('getFavorites');
     }
 }

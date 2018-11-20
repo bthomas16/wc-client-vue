@@ -92,7 +92,7 @@
                         <b-button variant="info" class="my-0" size="sm" @click="toggleIsManagingCollection" block>Manage Collection</b-button>
                     </b-col>
                 </b-row>
-                <b-row no-gutters align-v="center" align-h="between" class="w-100 mx-auto px-3 px-md-5 mt-md-2" v-if="!isManagingCollection">
+                <b-row no-gutters align-v="center" align-h="between" id="mobileRow" class="w-75 mx-auto px-3 px-md-5 mt-md-2" v-if="!isManagingCollection">
                     <b-col cols="4" md="auto" class="mt-1 mt-md-0 left-align left nowrap">
                         <b-form-checkbox
                             id="toggleFlags"
@@ -284,5 +284,12 @@ export default {
         outline: none;
         border:none;
     }
+
+@media(max-width: 750px) {
+    #mobileRow {
+        width: 100% !important;
+    }
+
+}
 </style>
 

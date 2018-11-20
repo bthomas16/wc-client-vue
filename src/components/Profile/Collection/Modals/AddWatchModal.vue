@@ -6,8 +6,8 @@
             <b-row align-h="center" align-v="center" :class="addWatchCount == 1 ? '' : 'hidden'" no-gutters>
                 <b-col cols="12" class="p-0 m-0">
                     <b-row align-h="start">
-                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="addWatch.src">
-                            <b-img :src="addWatch.src" fluid></b-img>
+                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="addWatch.src.images.length" v-for="image in addWatch.src.images" :key="image">
+                            <b-img :src="image" fluid></b-img>
                         </b-col>
                         <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile">
                             <file-selector id="fileSelector" :isPreviewBox="true" v-model="file" v-on:setImagesOnAddWatch="setImagesOnAddWatch"></file-selector>
@@ -606,12 +606,12 @@ export default {
             localStorage.setItem('addWatch', specs);
         },
 
-        setImagesOnAddWatch(data) {
-            console.log('setting data', data)
-            // data.forEach(image => {
-                console.log(data, 'das it')
-                this.addWatch.src = data.Location;
-            // })
+        setImagesOnAddWatch(images) {
+            console.log(images, 'das it')
+            images.forEach(image => {
+                this.addWatch.src.images.push(image.Location)
+                console.log('this is ithr addwwatch', this.addWatch.src)
+            })
         }
     },
 
