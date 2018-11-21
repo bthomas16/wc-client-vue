@@ -232,7 +232,7 @@ export default {
             // TODO: NOT THIS
             setTimeout(() => {
                 this.$store.dispatch('getNumberFSOT');
-                this.$store.dispatch('loadUserCollection');
+                // this.$store.dispatch('loadUserCollection');
             }, 500)
         },
 

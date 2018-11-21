@@ -3,7 +3,7 @@
 
             <draggable v-model="Collection" @start="startDrag" @end="endDrag" class="py-2">
 
-                <b-col :cols="smSizeCard" :md="mdSizeCard" class="left p-half"   v-for="watch in Collection" :key="watch.id" >
+                <b-col :cols="smSizeCard" :md="mdSizeCard" class="left p-half" v-for="watch in Collection" :key="watch.id">
                     <b-row align-v="start" align-h="around" class="watch mb-1" :class="!((drag) && (draggingId != watch.id)) ? '' : 'bg-light-green'" 
                      no-gutters>
                         <watch-flags 
@@ -20,7 +20,7 @@
                                 <b-col cols="12" xl="6" class="mx-auto p-xl-1">
                                     <b-img
                                     @click="selectWatch(watch)"
-                                    :src="watch.src.images[0]" 
+                                    :src="watch.src.images[0].src" 
                                     fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
                                     </b-img>
                                 </b-col>

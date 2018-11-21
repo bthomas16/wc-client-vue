@@ -314,7 +314,8 @@ const actions =
             }
         })
         .then(res => {
-            context.commit(SET_COLLECTION, res.data.collection);
+            let collection = res.data.collection;
+            context.commit(SET_COLLECTION, collection);
             context.commit(NOT_LOADING);            
         }).catch(err => {
             context.commit(NOT_LOADING);     
@@ -322,6 +323,10 @@ const actions =
             // context.commit(SERVER_VALIDATION_ERROR);
             return err;       
         })
+    },
+
+    sortImagesOnWatchForEntireCollection(collection) {
+        
     },
 
     submitNewWatch(context, watch) {

@@ -3,8 +3,8 @@
         <b-row align-h="center" v-if="selectedWatch.src">
             <!-- <b-col cols="8" class="mx-auto pb-3 border-bottom"> -->
                 <carousel :per-page="1" >
-                    <slide v-for="image in selectedWatch.src.images" :key="image">
-                        <b-img :src="image" fluid></b-img>
+                    <slide v-for="image in selectedWatch.src.images" :key="image.order">
+                        <b-img :src="image.src" fluid></b-img>
                     </slide>
                 </carousel>
             <!-- </b-col> -->
@@ -153,7 +153,7 @@ export default {
     methods: {
         watchStyleDisplayName(style) {
             return style.charAt(0).toUpperCase() + style.substr(1)
-        }  ,
+        },
 
         titleCase(str) {
             var splitStr = str.toLowerCase().split(' ');
@@ -161,7 +161,7 @@ export default {
                 splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
             }
             return splitStr.join(' '); 
-        }   
+        }
     }
 }
 </script>
