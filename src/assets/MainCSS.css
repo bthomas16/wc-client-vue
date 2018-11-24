@@ -116,7 +116,7 @@
 }
 
 .bg-light-green {
-    background-color: #d4EAC8 !important;
+    background-color: rgba(212, 248, 192, 0.575) !important;
 }
 
 .bg-light-yellow {
@@ -162,6 +162,10 @@
 .bg-white-opaque {
     background-color: rgba(207, 196, 196, 0.2);
     
+}
+
+.border-radius-qtr {
+    border-radius: 25% !important;
 }
 
 .op-full {

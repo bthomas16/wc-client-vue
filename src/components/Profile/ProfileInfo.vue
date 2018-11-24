@@ -2,12 +2,12 @@
     <b-container>
         <b-row align-v="center" align-h="center" class="py-3 relative border">
             <b-col class="absolute t-0 right-align">
-                    <b-img fluid src="http://localhost:8081/api/static-assets/settings.png" v-b-modal.editProfileModal id="settingIcon" class="pointer"></b-img>
+                <b-img fluid src="http://localhost:8081/api/static-assets/settings.png" v-b-modal.editProfileModal id="settingIcon" class="pointer"></b-img>
             </b-col>
             <b-col cols="5" sm="4" md="12" class="m-0 mx-auto center p-md-2 pt-lg-3">
                 
-                    <b-img v-show="isLoaded" @load="loaded" :src="User.imgSrc || 'http://localhost:8081/api/static-assets/blankprofpic.png'" fluid style="height: auto; max-height: 125px;" class="profPic mx-auto box-shadow-light" rounded></b-img>
-                    <div id="loader" class="h-100" v-show="!isLoaded">Loading...</div>
+                <b-img v-show="isLoaded" @load="loaded" :src="User.imgSrc || 'http://localhost:8081/api/static-assets/blankprofpic.png'" fluid style="height: auto; max-height: 125px;" class="profPic mx-auto box-shadow-light" rounded></b-img>
+                <div id="loader" class="h-100" v-show="!isLoaded">Loading...</div>
                 
             </b-col>
             <b-col cols="7" sm="7" md="12" class="left mx-auto p-0 pl-2 mt-2" >

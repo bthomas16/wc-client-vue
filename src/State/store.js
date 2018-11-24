@@ -111,9 +111,11 @@ const mutations =
     },
 
     [SET_COLLECTION](state, collection) {
+        console.log('ya', collection)
         state.isLoading = false;     
-        state.isCollectionLoaded = true;               
-        state.Collection = collection;
+        state.isCollectionLoaded = true;   
+        if (collection)             
+            state.Collection = collection;
     },
 
     [SELECT_WATCH](state, watch) {
@@ -320,6 +322,7 @@ const actions =
         }).catch(err => {
             context.commit(NOT_LOADING);     
             context.commit(INVALIDATE_JWT);
+            context.commit(SET_COLLECTION);
             // context.commit(SERVER_VALIDATION_ERROR);
             return err;       
         })
@@ -370,7 +373,7 @@ const actions =
             .then((res) => {
                 context.commit(SUBMIT_EDIT_WATCH, res.data.watch);
                 context.commit(NOT_LOADING);
-                return res;
+                return true;
             }).catch((err) => {
                 context.commit(NOT_LOADING); 
                 context.commit(INVALIDATE_JWT);
@@ -655,21 +658,49 @@ const actions =
     },
 
     getWatchInfoById(context, watchInfoId) {
-        console.log('howdy', watchInfoId)
-    return axios({
-        method: 'GET',
-        url: '/api/discover/watch-info',
-        params: {
-            watchInfoId: watchInfoId
-        }
+        return axios({
+            method: 'GET',
+            url: '/api/discover/watch-info',
+            params: {
+                watchInfoId: watchInfoId
+            }}).then(res => {
+                console.log('res from store', res)
+                return res.data.watchInfo;
+            }).catch(err => {
+                console.log(err);
+            })
+        },
+    getWatchNewsArticles(context) {
+        context.commit(LOADING);
+        return axios({
+            method: 'GET',
+            url: '/api/watch-news'
         }).then(res => {
-            console.log('res from store', res)
-            return res.data.watchInfo;
+            console.log('heres articles', res);
+            context.commit(NOT_LOADING);
+            return res.data.articles;
         }).catch(err => {
             console.log(err);
+            context.commit(NOT_LOADING);
+        })
+    },
+
+    getWatchNewsArticleById(context, id) {
+        context.commit(LOADING);
+        return axios({
+            method: 'GET',
+            url: '/api/watch-news/' + id
+        }).then(res => {
+            console.log('article here', res.data.article);
+            context.commit(NOT_LOADING);
+            return res.data.article;
+        }).catch(err => {
+            console.log(err);
+            context.commit(NOT_LOADING);
         })
     }
 }
+
 
 const getters = 
 {

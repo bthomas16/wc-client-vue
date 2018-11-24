@@ -5,7 +5,7 @@
         </b-row>
     </b-container>
     <b-container fluid v-else>
-         <b-row v-if="!Collection.length && !isFilteringCollection" align-h="center" no-gutters>
+         <b-row v-if="Collection.length == 0 && !isFilteringCollection" align-h="center" no-gutters>
             <b-col cols="10" md="8" class="border my-5 center p-2 p-md-5" id="begin-collection">
                 <p class="h2 center">Welcome to your <span class="nowrap">Watch Collection!</span></p>  
                 <p class="h4 m-h2 mt-4 mt-md-5">Get started by adding a watch!</p>
@@ -220,8 +220,7 @@ export default {
                 })
             } 
             else {
-                this.$store.dispatch('submitEditWatch', this.addWatch).then((res) => {
-                    console.log('STILL FUCKING SHIT UP', res)
+                this.$store.dispatch('submitEditWatch', this.addWatch).then(() => {
                     this.createAddWatch(); //reset add watch to defaults
                     this.addWatchCount = 1; //resets watch count
                 }).catch(err => {
@@ -232,7 +231,7 @@ export default {
             // TODO: NOT THIS
             setTimeout(() => {
                 this.$store.dispatch('getNumberFSOT');
-                // this.$store.dispatch('loadUserCollection');
+                this.$store.dispatch('loadUserCollection');
             }, 500)
         },
 

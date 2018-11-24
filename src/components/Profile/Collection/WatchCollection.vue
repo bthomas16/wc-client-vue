@@ -1,11 +1,12 @@
 <template>
     <b-container fluid>
 
-            <draggable v-model="Collection" @start="startDrag" @end="endDrag" class="py-2">
+            <draggable v-model="Collection" @start="startDrag" @end="endDrag" class="py-2" :options="addWatchDragOptions">
 
-                <b-col :cols="smSizeCard" :md="mdSizeCard" class="left p-half" v-for="watch in Collection" :key="watch.id">
-                    <b-row align-v="start" align-h="around" class="watch mb-1" :class="!((drag) && (draggingId != watch.id)) ? '' : 'bg-light-green'" 
+                <b-col :cols="smSizeCard" :md="mdSizeCard" class="dropdzone left p-half" v-for="watch in Collection" :key="watch.id" :id="watch.id">
+                    <b-row align-v="start" align-h="around" class="watch mb-1" :class="drag && (draggingId  != watch.id) ? 'bg-light-green' : ''" 
                      no-gutters>
+                     <p :text="watch ? 'fuck' : 'dick'"></p>
                         <watch-flags 
                             :watch="watch" 
                             :isShowFlags="isShowFlags" 
@@ -19,8 +20,9 @@
                             <b-row aling-h="center" align-v="center" no-gutters>
                                 <b-col cols="12" xl="6" class="mx-auto p-xl-1">
                                     <b-img
+                                    v-if="watch.src.images[0]"
                                     @click="selectWatch(watch)"
-                                    :src="watch.src.images[0].src" 
+                                    :src="watch.src.images[0].src"
                                     fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
                                     </b-img>
                                 </b-col>
@@ -80,14 +82,16 @@ export default {
 
     data () {
         return {
+            addWatchDragOptions: {
+                dropzoneSelector: '.dropzone',
+                draggableSelector: '.watch',
+                showDropzoneAreas: true,
+            },
             drag: false,
             emptyHeart: "http://localhost:8081/api/static-assets/empty-heart.png",
             fullHeart: "http://localhost:8081/api/static-assets/full-heart.png",
             showFlags: true,
             // DRAGABLE PROPERTIES
-            editable: true,
-            isDragging: false,
-            delayedDragging: false,
 
             watchToRemove: null,
             reasonsWatchMoved: {
@@ -118,12 +122,13 @@ export default {
 
         startDrag(e) {
             this.drag = true;
+            console.log(e.item.id, 'okayy', e.item)
             this.draggingId = e.item.id;
+            console.log(this.draggingId, 'its done')
         },
 
         endDrag(e) {
             this.drag = false;
-            this.draggingIndex = e.item.id - 1;
         },
 
         orderChanged() {

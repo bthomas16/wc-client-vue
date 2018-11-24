@@ -2,11 +2,21 @@
     <b-container>
         <b-row align-h="center" v-if="selectedWatch.src">
             <!-- <b-col cols="8" class="mx-auto pb-3 border-bottom"> -->
-                <carousel :per-page="1" >
-                    <slide v-for="image in selectedWatch.src.images" :key="image.order">
-                        <b-img :src="image.src" fluid></b-img>
-                    </slide>
-                </carousel>
+                <b-carousel 
+                    style="text-shadow: 1px 1px 2px #333;"
+                    img-width="1024"
+                    img-height="480"
+                    background="lightgray"
+                    :controls="selectedWatch.src.images.length > 1 ? true : false"
+                    :indicators="selectedWatch.src.images.length > 1 ? true : false">
+                    <b-carousel-slide 
+                        v-for="image in selectedWatch.src.images" :key="image.src">
+                        <img slot="img" class="d-block img-fluid w-100" width="1024" height="480"
+                        :src="image.src" alt="image slot">
+                    </b-carousel-slide>
+                </b-carousel>
+
+                
             <!-- </b-col> -->
         </b-row>
         <b-row align-h="start">

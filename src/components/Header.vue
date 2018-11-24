@@ -13,7 +13,7 @@
         <b-nav-item v-if="isAuthorized"><router-link to="/profile">My Profile</router-link></b-nav-item>
         <!-- <b-nav-item class="ml-0 ml-lg-4 oswlad" v-if="isAuthorized">Buy | Sell | Trade</b-nav-item> -->
         <b-nav-item><router-link to="/discover">Discover</router-link></b-nav-item>
-        <b-nav-item>Watch News</b-nav-item> 
+        <b-nav-item><router-link to="/watch-news">Watch News</router-link></b-nav-item> 
         <b-nav-item @click="logout" class="relative mobile-only" v-if="isAuthorized">Logout</b-nav-item>     
     </b-navbar-nav>
 

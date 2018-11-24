@@ -4,12 +4,17 @@
             <!-- Add Img Row -->
 
             <b-row align-h="center" align-v="center" :class="addWatchCount == 1 ? '' : 'hidden'" no-gutters>
-                <b-col cols="12" class="p-0 m-0">
-                    <b-row align-h="start">
-                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="addWatch.src.images.length" v-for="image in addWatch.src.images" :key="image.order">
-                            <b-img :src="image.src" fluid></b-img>
-                        </b-col>
-                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile">
+                <b-col cols="12" class="mx-auto p-0 m-0">
+                    <b-row align-h="start" no-gutters>
+
+                        <draggable @start="startDrag" @end="endDrag" v-model="watchImages" class="row mt-2">
+                            <b-col cols="5" class="relative p-1" v-for="(image, index) in addWatch.src.images" :key="image.src">
+                                <div class="absolute t-0 white bg-red r0 p-1 h8 pointer white border-radius-qtr" @click="removeWatchImage(index)" v-if="addWatch.src.images.length > 1">X</div>
+                                <b-img  :src="image.src" fluid></b-img>
+                            </b-col>
+                        </draggable>
+
+                        <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="!addWatch.src.images.length">
                             <file-selector id="fileSelector" :isPreviewBox="true" v-model="file" v-on:setImagesOnAddWatch="setImagesOnAddWatch"></file-selector>
                         </b-col>
                     </b-row>
@@ -437,10 +442,12 @@
 
 <script>
 import axios from 'axios';
+import draggable from 'vuedraggable';
 import FileSelector from '../FileSelector.vue';
 
 export default {
     components: {
+        draggable,
         fileSelector: FileSelector
     },
     name: 'addWatchModal',
@@ -596,6 +603,8 @@ export default {
                 { value: '29mm', text: '29mm' },
                 { value: '30mm', text: 'Over 29mm Height'}
             ],
+            drag: false,
+            draggingId: '',
         }
         
     },
@@ -615,13 +624,41 @@ export default {
                 };
                 this.addWatch.src.images.push(imageObjToPush)
             })
+        },
+
+        removeWatchImage(indexToRemove) {
+            if (this.addWatch.src.images.length > 1) {
+                this.addWatch.src.images.splice(indexToRemove, 1);
+            } else {
+                return false;
+            }
+        },
+
+        startDrag(e) {
+            this.drag = true;
+            this.draggingId = e.item.id;
+        },
+
+        endDrag(e) {
+            this.drag = false;
         }
     },
 
     computed: {
         addWatchAccuracy() {
             this.addWatch.accuracy = null;
-        }
+        },
+
+        watchImages: {
+            set(newImagesOrder) {
+                // console.log('yayyyy im updating the image order', newImagesOrder)
+                console.log(newImagesOrder, 'dicke')
+                this.addWatch.src.images = newImagesOrder;
+                },
+            get() {
+               return this.addWatch.src.images
+            }
+        },
     }
 }
 </script>

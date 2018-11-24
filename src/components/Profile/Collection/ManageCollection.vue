@@ -238,7 +238,7 @@ export default {
 
         resetCollectionFilter(){
             this.selectSortCategory();
-            // this.$store.dispatch('loadUserCollection');
+            this.$store.dispatch('loadUserCollection');
         }
 
     },

@@ -15,8 +15,8 @@
                     <b-col class="p-0">
                         <p class="h3">{{currentWatchInfo.brand}}</p>
                         <p v-if="currentWatchInfo.siteLink"><a target="_blank" class="pointer" :href="currentWatchInfo.siteLink">Shop {{currentWatchInfo.brand}} here</a></p>
-                        <p class="h5 m-h5">{{currentWatchInfo.text}}</p>
-                        <p class="m-h6 h6 pointer" v-if="currentWatchInfo.siteLink"><a :href="currentWatchInfo.siteLink">Learn More</a></p>
+                        <p class="h5">{{currentWatchInfo.text}}</p>
+                        <p class="h6 pointer" v-if="currentWatchInfo.siteLink"><a :href="currentWatchInfo.siteLink">Learn More</a></p>
                         <b-row align-h="center" v-if="currentWatchInfo.logoSrc">
                             <b-col class="mx-auto mt-3" cols="4">
                                 <b-img fluid :src="currentWatchInfo.logoSrc"></b-img>

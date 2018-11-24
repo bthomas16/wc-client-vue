@@ -2,6 +2,8 @@ import Home from './components/Auth/Home.vue';
 import Profile from './components/Profile/Profile.vue';
 import Collection from './components/Profile/Profile.vue';
 import DiscoverWatches from './components/DiscoverWatches.vue';
+import WatchNews from './components/WatchNews.vue';
+import WatchNewsArticle from './components/WatchNewsArticle.vue';
 import store from './State/store.js';
 
 export const routes = [
@@ -22,6 +24,16 @@ export const routes = [
         name: 'discover',
         component: DiscoverWatches   
     },
+    { 
+        path: '/watch-news',
+        name: 'watchNews',
+        component: WatchNews,
+    },
+    {
+        path: '/watch-news/:id',
+        name: 'watchNewsArticle',
+        component: WatchNewsArticle
+    },  
     { 
         path: '/*',
         name: 'wildcard',
