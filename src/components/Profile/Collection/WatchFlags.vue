@@ -2,10 +2,10 @@
     <b-container fluid>
         <b-row no-gutters>
             <b-col cols="12" class="p-0 m-0">
-                <b-row no-gutters>
-                    <p class="w-100 h5 m-h7 p-0 m-0 d-md-none nowrap"><strong>{{truncatedWatchName(titleCase(watch.name), 8)}}</strong></p>
-                </b-row>
                 <b-row no-gutters v-if="isShowFlags && !isManagingCollection">
+                    <!-- Truncated Watch Name -->
+                    <p class="w-100 h5 m-h7 p-0 m-0"><strong>{{truncatedWatchName(titleCase(watch.name), currentTruncatedLength)}}</strong></p>
+                    
                     <!-- FSOT STATUS -->
                     <b-col cols="6" class="bg-red" v-if="(watch.isForSale && !watch.isForTrade)">
                         <p id="forSaleIcon" class=" center pointer z4 flag m-0 white broder-right-white" >Sale</p>
@@ -88,6 +88,30 @@ export default {
                     break; 
             }
         },
+    },
+
+    computed: {
+        currentTruncatedLength() {
+            let currentButtonState = this.$store.state.CurrentCardSize;
+            switch(currentButtonState) {
+                case "sm":
+                    currentButtonState = 8;
+                    return currentButtonState;
+                    break;
+                case "md":
+                    currentButtonState = 18;
+                    return currentButtonState;
+                    break;
+                case "lg":
+                    currentButtonState = 28;
+                    return currentButtonState;
+                    break;
+                default:
+                    currentButtonState = 8;
+                    return currentButtonState;
+            }
+        }
+        
     }
 }
 </script>

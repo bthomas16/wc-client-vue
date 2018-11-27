@@ -6,13 +6,13 @@ import VueRouter from 'vue-router';
 import { routes } from './routes'
 import axios from 'axios';
 import store  from './State/store.js';
-// import VueDraggable from 'vue-draggable'
+// import AnimatedVue from 'animated-vue'
+ 
 
 
 Vue.use(VueRouter);
 Vue.use(BootstrapVue);
 Vue.use(MainCSS);
-// Vue.use(VueDraggable);
 
 
 import 'bootstrap/dist/css/bootstrap.css'

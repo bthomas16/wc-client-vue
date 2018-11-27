@@ -4,14 +4,16 @@
             <!-- Add Img Row -->
 
             <b-row align-h="center" align-v="center" :class="addWatchCount == 1 ? '' : 'hidden'" no-gutters>
-                <b-col cols="12" class="mx-auto p-0 m-0">
+                <b-col cols="12" class="mx-auto p-2 m-0">
                     <b-row align-h="start" no-gutters>
 
-                        <draggable @start="startDrag" @end="endDrag" v-model="watchImages" class="row mt-2">
-                            <b-col cols="5" class="relative p-1" v-for="(image, index) in addWatch.src.images" :key="image.src">
-                                <div class="absolute t-0 white bg-red r0 p-1 h8 pointer white border-radius-qtr" @click="removeWatchImage(index)" v-if="addWatch.src.images.length > 1">X</div>
-                                <b-img  :src="image.src" fluid></b-img>
-                            </b-col>
+                        <draggable @start="startDrag" @end="endDrag" v-model="watchImages" clas="p-0 m-0">
+                            <transition-group name="swap-list" class="row">
+                                <b-col cols="6" class="relative p-1" v-for="image in addWatch.src.images" :key="image.src">
+                                    <div class="absolute t-0 white bg-red r0 p-1 h8 pointer white border-radius-qtr" @click="removeWatchImage(index)" v-if="addWatch.src.images.length > 1">X</div>
+                                    <b-img  :src="image.src" fluid class="w-100"></b-img>
+                                </b-col>
+                            </transition-group>
                         </draggable>
 
                         <b-col cols="5" md="3" class="border box-shadow p-0 m-1 addWatchContainer imgTile" v-if="!addWatch.src.images.length">
@@ -743,6 +745,13 @@ export default {
         width: 100%;
         min-height: 6rem; 
         }
+    }
+
+
+    /* ANIMATIONS */
+
+    .swap-list-move {
+        transition: transform .75s;
     }
 </style>
 

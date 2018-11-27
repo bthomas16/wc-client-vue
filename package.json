@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@shopify/draggable": "^1.0.0-beta.8",
-    "animate.css": "^3.7.0",
+    "animated-vue": "^0.5.3",
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
     "fs": "0.0.1-security",
@@ -25,6 +25,7 @@
     "vue-carousel": "^0.16.0-rc2",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
+    "vue2-animate": "^2.1.0",
     "vuedraggable": "^2.16.0",
     "vuex": "^3.0.1"
   },

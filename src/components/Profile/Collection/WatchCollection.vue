@@ -1,54 +1,39 @@
 <template>
     <b-container fluid>
 
-            <draggable v-model="Collection" @start="startDrag" @end="endDrag" class="py-2" :options="addWatchDragOptions">
+            <draggable  v-model="Collection" @start="startDrag" @end="endDrag" class="py-2" :options="addWatchDragOptions">
+    
+                <transition-group name="swap-list">
+                    <b-col :cols="smSizeCard" :md="mdSizeCard" class="dropdzone left p-half" v-for="watch in Collection" :key="watch.id" :id="watch.id">
+                        <b-row align-v="start" align-h="around" class="watch mb-1 something-i-need-to-animate" :class="drag && (draggingId  != watch.id) ? 'bg-light-green' : ''" no-gutters>
+                            <watch-flags 
+                                :watch="watch" 
+                                :isShowFlags="isShowFlags" 
+                                :isShowEditFlags="isShowEditFlags" 
+                                :isManagingCollection="isManagingCollection"
+                                v-on:editWatch="editWatch"
+                                v-on:removeWatchModal="removeWatchModal">
+                            </watch-flags>
 
-                <b-col :cols="smSizeCard" :md="mdSizeCard" class="dropdzone left p-half" v-for="watch in Collection" :key="watch.id" :id="watch.id">
-                    <b-row align-v="start" align-h="around" class="watch mb-1" :class="drag && (draggingId  != watch.id) ? 'bg-light-green' : ''" 
-                     no-gutters>
-                     <p :text="watch ? 'fuck' : 'dick'"></p>
-                        <watch-flags 
-                            :watch="watch" 
-                            :isShowFlags="isShowFlags" 
-                            :isShowEditFlags="isShowEditFlags" 
-                            :isManagingCollection="isManagingCollection"
-                            v-on:editWatch="editWatch"
-                            v-on:removeWatchModal="removeWatchModal">
-                        </watch-flags>
+                            <b-col cols="12" class="something-i-need-to-animate watch-wrapper order-1 border box-shadow"> 
+                                <b-row aling-h="center" align-v="center" no-gutters class="relative">
+                                    <b-col cols="12" xl="12" class="mx-auto p-xl-1">
+                                        <b-img
+                                        v-if="watch.src.images[0]"
+                                        @click="selectWatch(watch)"
+                                        :src="watch.src.images[0].src"
+                                        fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
+                                        </b-img>
+                                    </b-col>
+                                    <b-col cols="12" class="absolute p-0 m-1 m-lg-3 b-0 r0 " >
+                                        <b-img :src="isFavoriteWatch(watch.id) ? fullHeart : emptyHeart" class="heartIcon pointer right" @click="favoriteToggle(watch.id)"></b-img> 
+                                    </b-col>
+                                </b-row>
+                            </b-col>
 
-                        <b-col cols="12" class="watch-wrapper order-1 border box-shadow"> 
-                            <b-row aling-h="center" align-v="center" no-gutters>
-                                <b-col cols="12" xl="6" class="mx-auto p-xl-1">
-                                    <b-img
-                                    v-if="watch.src.images[0]"
-                                    @click="selectWatch(watch)"
-                                    :src="watch.src.images[0].src"
-                                    fluid class="watchImg pointer p-xl-1 border-xl mx-auto">
-                                    </b-img>
-                                </b-col>
-                                <b-col cols="12" xl="6" class="d-none d-md-block mx-auto mt-md-2 mt-xl-0">
-                                    <b-row no-gutters align-h="end">
-                                        <b-col class="right-align right pr-md-3 h5 mt-lg-2 nowrap">
-                                            {{truncatedWatchName(titleCase(watch.name), 13)}}
-                                        </b-col>
-                                    </b-row>
-                                    <b-row align-h="center" no-gutters>
-                                        <b-col cols="10" class="mt-0 mt-md-3">
-                                            <b-button id="seeMore" variant="outline-info" size="sm" block @click="selectWatch(watch)" class="z4 py-1 center">See More</b-button>
-                                        </b-col>
-                                        <b-col cols="10"> 
-                                            <b-button id="searchRef" variant="primary" class="mt-2 py-1" size="sm" block>Search Model</b-button>   
-                                        </b-col>
-                                        <b-col cols="10" class="p-0 my-1" >
-                                            <b-img :src="isFavoriteWatch(watch.id) ? fullHeart : emptyHeart" width="30px;" class="heartIcon pointer right" @click="favoriteToggle(watch.id)"></b-img> 
-                                        </b-col>
-                                    </b-row>
-                                </b-col>
-                            </b-row>
-                        </b-col>
-
-                    </b-row>
-                </b-col>
+                        </b-row>
+                    </b-col>
+                </transition-group>
                 
             </draggable>  
 
@@ -71,6 +56,7 @@ import axios from 'axios';
 import draggable from 'vuedraggable';
 import RemoveWatchModal from './Modals/RemoveWatchModal.vue';
 import WatchFlags from './WatchFlags.vue';
+
 
 export default {
     name: 'watchCollection',
@@ -101,7 +87,14 @@ export default {
                 trades: []
             },
 
-            draggingId: ''
+            draggingId: '',
+            isAnimate: true,
+            TestArray: [
+                'option1',
+                'option2',
+                'option3',
+                'option4',
+            ]
         }
     },
     methods: {
@@ -129,6 +122,10 @@ export default {
 
         endDrag(e) {
             this.drag = false;
+            this.isAnimate = false;
+            setTimeout(() => {
+                this.isAnimate = true;
+            }, 400)
         },
 
         orderChanged() {
@@ -168,7 +165,7 @@ export default {
                     this.$store.dispatch('loadUserCollection');
                     this.resetReasonsWatchMoved();
                     this.$refs.removeWatchModal.hide();
-                }, 500)       
+                }, 1)       
             })   
         },
 
@@ -184,17 +181,15 @@ export default {
                 if(found) return true
                 else return false
             }
-        },
+        },   
 
-        
-
-        truncatedWatchName(name, lengthToTruncate) {
-            if(name.length > lengthToTruncate) {
-                return name.substring(0, lengthToTruncate) + '...';
-            }
-            else 
-                return name;
-        },
+        // truncatedWatchName(name, lengthToTruncate) {
+        //     if(name.length > lengthToTruncate) {
+        //         return name.substring(0, lengthToTruncate) + '...';
+        //     }
+        //     else 
+        //         return name;
+        // },
 
          titleCase(str) {
             var splitStr = str.toLowerCase().split(' ');
@@ -294,6 +289,14 @@ export default {
         /* max-height: 25rem; */
     }
 
+    .heartIcon {
+        width: 42.5px;
+    }
+
+    .swap-list-move {
+        transition: transform .75s;
+    }
+
 
     @media(max-width: 1000px) {
         .border-xl{
@@ -334,6 +337,10 @@ export default {
             /* height: 5rem; */
             width: 100%
         }
+
+        .heartIcon {
+            width: 28px;
+        }
     }
 
     @media(max-width: 415px) {
@@ -345,11 +352,25 @@ export default {
             font-size: 10.5px;
             padding: .2em !important;
         }
+
+        .heartIcon {
+            width: 22.5px;
+        }
     }
 
 
 
+/* ANIMATIONS */
 
+/* .bounce {
+  animation: pulse .5s;
+}
+
+@keyframes pulse {
+  100% {
+    transform: scale(1.2);
+  }
+} */
 
 
 

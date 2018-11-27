@@ -1,18 +1,10 @@
 <template>
     <b-container fluid>
-        <b-row class="p-1 p-md-3">
-            <p class="h2 pt-3 pl-3">Latest Watch News</p>
-            <b-col cols="12">
-                <b-row no-gutters v-for="article in articles" :key="article.id" class="my-2 border p-1" @click="routeToArticle(article.id)">
-                    <b-col cols="12" md="2">
-                        <b-img class="p-2" src="http://localhost:8081/api/static-assets/blankprofpic.png" fluid></b-img>
-                    </b-col>
-                    <b-col cols="12" md="10" class="p-2">
-                        <p class="h3">{{article.title}}</p>
-                        <p>{{truncatedText(article.text)}}...</p>
-                    </b-col>
-                </b-row>
+        <b-row no-gutters>
+            <b-col cols="8" class="mx-auto">
+
             </b-col>
+            <b-img src="" fluid></b-img>
         </b-row>
     </b-container>
 </template>
